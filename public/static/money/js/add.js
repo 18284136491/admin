@@ -23,14 +23,15 @@ $.ajax({
             var childen = data[i].child;
             if(childen){
                 text += '<button style="width:150px" class="btn btn-default" onclick="checkedtype($(this))" type="button" attr-typeid="'+data[i].id+'" attr-typepid="'+data[i].pid+'">'+data[i].typename+'</button>';
-                text += '&nbsp&nbsp&nbsp';
+                text += '&nbsp&nbsp&nbsp&nbsp';
                 for(var b = 0; b < childen.length; b++){
-                    text += '&nbsp&nbsp';
                     text += '<button style="width:100px" class="btn btn-default" onclick="checkedtype($(this))" type="button" attr-typeid="'+childen[b].id+'" attr-typepid="'+childen[b].pid+'">'+childen[b].typename+'</button>';
+                    text += '&nbsp&nbsp';
                 }
-            }else{
                 text += '</br></br>';
+            }else{
                 text += '<button style="width:150px" class="btn btn-default" onclick="checkedtype($(this))" type="button" attr-typeid="'+data[i].id+'" attr-typepid="'+data[i].pid+'">'+data[i].typename+'</button>';
+                text += '</br></br>';
             }
         }
         $('#typename').html(text);
@@ -49,11 +50,11 @@ function checkedtype(data){
 
 
 
-// 余额类型按钮
+// 支付方式
 var html1 = '';
 html1 += '<input class="form-control" type="hidden" id="balanceid" name="balanceid" value="">';
 html1 += '<div class="form-group col-md-12 col-xs-12 " id="form_group_type">';
-html1 += '<label class="col-xs-12" for="type">余额类型</label>';
+html1 += '<label class="col-xs-12" for="type">支付方式</label>';
 html1 += '<div class="col-sm-12" id="balancename">';
 html1 += '</div>';
 html1 += '</div>';
@@ -82,7 +83,6 @@ function checkedBalance(data){
     var balanceidid = data.attr('attr-balanceid');// 获取选中的类型id
     $(data).attr('class','btn btn-info');
     $('#balanceid').val(balanceidid);// 赋值给隐藏域
-    // $('#typepid').val(typepid);// 赋值给隐藏域
 }
 
 

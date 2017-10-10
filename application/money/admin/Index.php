@@ -38,11 +38,12 @@ class Index extends Admin
         $map = $this->getMap();
 
         // 数据列表
-        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,t.typename";
+        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
         $data_list = DB::name('money_details')
             ->alias('m_d')
             ->field($field)
             ->join('type t','t.id = m_d.typeid')
+            ->join('balance b','b.id = m_d.balanceid')
             ->where($map)
             ->order('m_d.id desc')
             ->paginate();
@@ -52,14 +53,15 @@ class Index extends Admin
 
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
-            ->setPageTitle('金币交易列表') // 设置页面标题
+            ->setPageTitle('资金流水明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
             ->setSearch(['money' => '交易金额', 'description' => '交易描述']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['id', 'ID'],
+                ['name', '支付方式'],
+                ['typename', '交易类型'],
                 ['money', '交易金额'],
                 ['description', '交易描述'],
-                ['typename', '交易类型'],
                 ['create_time', '交易时间'],
                 ['right_button', '操作', 'btn']
             ])
@@ -80,22 +82,23 @@ class Index extends Admin
         // 保存数据
         if ($this->request->isPost()) {
             $data = $this->request->post();
-            /*// 验证
-            $result = $this->validate($data, 'User');
-            // 验证失败 输出错误信息
-            if(true !== $result) $this->error($result);*/
 
             if(!$data['typeid']){
                 $this->error('请选择交易类型');
             }
             $data['create_time'] = time();
 
-            $insert = Db::name('money_details')->insert($data);
+            // 判断交易项是收入还是支出
+            if(substr($data['money'],0,1) == '+'){
+                $data['money'] = substr($data['money'],1);
+            }elseif(substr($data['money'],0,1) == '-'){
+                $data['money'] = $data['money'];
+            }else{
+                $data['money'] = '-'.$data['money'];
+            }
 
+            $insert = Db::name('money_details')->insert($data);
             if ($insert) {
-                Hook::listen('user_add', $user);
-                // 记录行为
-                action_log('user_add', 'insert_money_details', $user['id'], UID);
                 $this->success('新增成功', url('index'));
             } else {
                 $this->error('新增失败');
@@ -106,20 +109,20 @@ class Index extends Admin
         $url = url('getTypeList');
         $getTypeBtn = '<button id="getTypeList" type="button" action="'."$url".'" class="btn btn-default">获取交易类型</button>';
 
-        // 获取地址
+        // 获取支付类型
         $balance_url = url('getBalanceList');
         $getBalanceBtn = '<button id="getBalanceBtn" type="button" action="'."$balance_url".'" class="btn btn-default">获取余额类型</button>';
 
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('新增交易记录') // 设置页面标题
-            ->addBtn($getTypeBtn)
-            ->addBtn($getBalanceBtn)
             ->addFormItems([ // 批量添加表单项
                 ['text', 'money', '交易金额'],
                 ['textarea', 'description', '交易描述'],
             ])
-            ->js('index')
+            ->addBtn($getTypeBtn)
+            ->addBtn($getBalanceBtn)
+            ->js('add')
             ->fetch();
     }
 
@@ -136,10 +139,15 @@ class Index extends Admin
         // 保存数据
         if ($this->request->isPost()) {
             $data = $this->request->post();
-            /*// 验证
-            $result = $this->validate($data, 'User.update');
-            // 验证失败 输出错误信息
-            if(true !== $result) $this->error($result);*/
+
+            // 判断交易项是收入还是支出
+            if(substr($data['money'],0,1) == '+'){
+                $data['money'] = substr($data['money'],1);
+            }elseif(substr($data['money'],0,1) == '-'){
+                $data['money'] = $data['money'];
+            }else{
+                $data['money'] = '-'.$data['money'];
+            }
             $update = Db::name('money_details')->update($data);
             if ($update) {
                 // 记录行为
@@ -149,17 +157,21 @@ class Index extends Admin
             }
         }
 
-        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,t.typename";
+        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,t.typename,b.id balanceid";
         // 获取数据
         $info = DB::name('money_details')
             ->alias('m_d')
             ->field($field)
             ->join('type t','t.id = m_d.typeid')
+            ->join('balance b','b.id = m_d.balanceid')
             ->where("m_d.id = $id")
             ->find();
-        // 获取地址
+        // 获取交易类型
         $url = url('getTypeList');
         $getTypeBtn = '<button id="getTypeList" attr_typeid="'.$info['typeid'].'"  attr_typepid="'.$info['type_pid'].'" type="button" action="'."$url".'" class="btn btn-default">获取类型列表</button>';
+        // 获取支付类型
+        $balance_url = url('getBalanceList');
+        $getBalanceBtn = '<button id="getBalanceBtn" attr-balanceid="'.$info['balanceid'].'" type="button" action="'."$balance_url".'" class="btn btn-default">获取支付类型</button>';
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('编辑') // 设置页面标题
@@ -169,6 +181,7 @@ class Index extends Admin
                 ['textarea', 'description', '交易描述'],
             ])
             ->addBtn($getTypeBtn)
+            ->addBtn($getBalanceBtn)
             ->js('edit')
             ->setFormData($info) // 设置表单数据
             ->fetch();

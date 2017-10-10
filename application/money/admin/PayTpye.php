@@ -25,7 +25,7 @@ use think\Hook;
  * 用户默认控制器
  * @package app\user\admin
  */
-class Type extends Admin
+class PayTpye extends Admin
 {
     /**
      * 用户首页
@@ -39,19 +39,18 @@ class Type extends Admin
         $map = $this->getMap();
 
         // 数据列表
-        $data_list = DB::name('type')->where($map)->order('sort asc')->paginate();
+        $data_list = DB::name('balance')->where($map)->paginate();
 
         // 分页数据
         $page = $data_list->render();
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
-            ->setPageTitle('金币交易列表') // 设置页面标题
+            ->setPageTitle('支付方式列表') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
             ->setSearch(['id' => 'id', 'pid' => 'pid', 'typename' => '交易名称']) // 设置搜索参数
             ->addColumns([ // 批量添加列
-                ['sort', '排序'],
-                ['typename', '交易名称'],
-//                ['pid', '父级Id'],
+                ['name', '类型名称'],
+                ['balance', '可用余额'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
@@ -72,10 +71,7 @@ class Type extends Admin
         if ($this->request->isPost()) {
             $data = $this->request->post();
 
-            if($data['pid'] == ''){
-                $this->error('请选择交易父类型');
-            }
-            $insert = Db::name('type')->insert($data);
+            $insert = Db::name('balance')->insert($data);
             if ($insert) {
                 // 记录行为
                 $this->success('新增成功', url('index'));
@@ -84,19 +80,13 @@ class Type extends Admin
             }
         }
 
-        // 获取地址
-        $url = url('getTypeList');
-        $getTypeBtn = '<button id="getTypeList" type="button" action="'."$url".'" class="btn btn-default">获取类型列表</button>';
-
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('新增交易记录') // 设置页面标题
-            ->addBtn($getTypeBtn)
             ->addFormItems([ // 批量添加表单项
-                ['text', 'typename', '类型名称'],
-                ['text', 'sort', '排序'],
+                ['text', 'name', '类型名称'],
+                ['text', 'balance', '可用余额'],
             ])
-            ->js('typeadd')
             ->fetch();
     }
 
@@ -114,7 +104,7 @@ class Type extends Admin
         if ($this->request->isPost()) {
             $data = $this->request->post();
 
-            $up = Db::name('type')->update($data);
+            $up = Db::name('balance')->update($data);
             if ($up) {
                 $this->success('编辑成功', cookie('__forward__'));
             } else {
@@ -123,20 +113,15 @@ class Type extends Admin
         }
 
         // 获取数据
-        $info = Db::name('type')->where('id', $id)->find();
-        // 获取地址
-        $url = url('getTypeList');
-        $getTypeBtn = '<button id="getTypeList" attr-typepid="'.$info['pid'].'" type="button" action="'."$url".'" class="btn btn-default">获取类型列表</button>';
+        $info = Db::name('balance')->where('id', $id)->find();
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('编辑') // 设置页面标题
             ->addFormItems([ // 批量添加表单项
                 ['hidden', 'id'],
-                ['text', 'typename', '类型名称'],
-                ['text', 'sort', '排序'],
+                ['text', 'name', '类型名称'],
+                ['text', 'balance', '可用余额'],
             ])
-            ->addBtn($getTypeBtn)
-            ->js('typeedit')
             ->setFormData($info) // 设置表单数据
             ->fetch();
     }
@@ -193,11 +178,12 @@ class Type extends Admin
         }elseif($type == 'disable'){
             $data['status'] = 0;
         }elseif($type == 'delete'){
-            Db::name('type')->where($map)->delete();
+            DDb::name('balance')->where($map)->delete();
             $this->success('操作成功',url('index'));
         }
-        Db::name('type')->where($map)->update($data);
+        Db::name('balance')->where($map)->update($data);
         $this->success('操作成功',url('index'));
+
     }
 
     /**

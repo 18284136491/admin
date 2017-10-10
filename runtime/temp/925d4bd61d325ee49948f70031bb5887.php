@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:68:"E:\phpStudy\WWW\Github\admin/application/admin\view\index\index.html";i:1489042525;s:63:"E:\phpStudy\WWW\Github\admin/application/admin\view\layout.html";i:1505546614;s:46:"./application/common/builder/aside/layout.html";i:1489042525;s:53:"./application/common/builder/aside/blocks/recent.html";i:1489042525;s:53:"./application/common/builder/aside/blocks/online.html";i:1489042525;s:53:"./application/common/builder/aside/blocks/switch.html";i:1489042525;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:67:"D:\phpStudy\WWW\GitHub\admin/application/admin\view\menu\index.html";i:1507599354;s:63:"D:\phpStudy\WWW\GitHub\admin/application/admin\view\layout.html";i:1507599354;s:46:"./application/common/builder/aside/layout.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/recent.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/online.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/switch.html";i:1507598781;}*/ ?>
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9 no-focus" lang="zh"> <![endif]-->
 <!--[if gt IE 9]><!--> <html class="no-focus" lang="zh"> <!--<![endif]-->
@@ -43,6 +43,8 @@
 
 
     
+<link href="__LIBS__/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" />
+
 
     <!-- Bootstrap and OneUI CSS framework -->
     <?php if(\think\Config::get('minify_status') == '1'): ?>
@@ -545,22 +547,126 @@
     <main id="main-container">
         <!-- Page Header -->
         
+        <?php if(empty($_pop) || (($_pop instanceof \think\Collection || $_pop instanceof \think\Paginator ) && $_pop->isEmpty())): ?>
+        <div class="bg-gray-lighter">
+            <ol class="breadcrumb">
+                <li><i class="fa fa-map-marker"></i></li>
+                <?php if(!(empty($_location) || (($_location instanceof \think\Collection || $_location instanceof \think\Paginator ) && $_location->isEmpty()))): if(is_array($_location) || $_location instanceof \think\Collection || $_location instanceof \think\Paginator): $i = 0; $__LIST__ = $_location;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+                <li><a class="link-effect" href="<?php if(!(empty($v["url_value"]) || (($v["url_value"] instanceof \think\Collection || $v["url_value"] instanceof \think\Paginator ) && $v["url_value"]->isEmpty()))): ?><?php echo url($v['url_value']); else: ?>javascript:void(0);<?php endif; ?>"><?php echo $v['title']; ?></a></li>
+                <?php endforeach; endif; else: echo "" ;endif; endif; ?>
+            </ol>
+        </div>
+        <?php endif; ?>
+        
         <!-- END Page Header -->
 
         <!-- Page Content -->
         <div class="content">
             
-            <?php echo hook('page_tips'); if(!(empty($default_pass) || (($default_pass instanceof \think\Collection || $default_pass instanceof \think\Paginator ) && $default_pass->isEmpty()))): ?>
-    <div class="alert alert-danger alert-dismissable">
+            <?php echo hook('page_tips'); ?>
+            
+            
+    <div class="alert alert-warning alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h3 class="font-w300 push-15">安全提示</h3>
-        <p>超级管理员默认密码未修改，建议马上 <a class="alert-link link-effect" href="<?php echo url('user/index/edit', ['id' => 1]); ?>">修改</a>。</p>
+        <p><strong><i class="fa fa-fw fa-info-circle"></i> 提示：</strong>按住表头可拖动节点，调整后点击【保存节点】。</p>
     </div>
-    <?php endif; ?>
-    
+
     <div class="row">
-        <?php echo hook('admin_index'); ?>
+        <div class="col-md-12">
+            <div class="block">
+                <?php if(!(empty($tab_nav) || (($tab_nav instanceof \think\Collection || $tab_nav instanceof \think\Paginator ) && $tab_nav->isEmpty()))): ?>
+                <ul class="nav nav-tabs">
+                    <?php if(is_array($tab_nav['tab_list']) || $tab_nav['tab_list'] instanceof \think\Collection || $tab_nav['tab_list'] instanceof \think\Paginator): $i = 0; $__LIST__ = $tab_nav['tab_list'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$tab): $mod = ($i % 2 );++$i;?>
+                    <li <?php if($tab_nav['curr_tab'] == $key): ?>class="active"<?php endif; ?>>
+                        <a href="<?php echo $tab['url']; ?>"><?php echo $tab['title']; ?></a>
+                    </li>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                    <li <?php if($tab_nav['curr_tab'] == 'module-sort'): ?>class="active"<?php endif; ?>>
+                        <a href="<?php echo url('', ['group' => 'module-sort']); ?>">模块排序</a>
+                    </li>
+                    <li class="pull-right">
+                        <ul class="block-options push-10-t push-10-r">
+                            <li>
+                                <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                            </li>
+                            <li>
+                                <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+                            </li>
+                            <li>
+                                <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
+                            </li>
+                            <li>
+                                <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <?php else: ?>
+                <div class="block-header bg-gray-lighter">
+                    <ul class="block-options">
+                        <li>
+                            <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                        </li>
+                        <li>
+                            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+                        </li>
+                        <li>
+                            <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
+                        </li>
+                        <li>
+                            <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title"><?php echo $page_title; ?></h3>
+                </div>
+                <?php endif; ?>
+                <div class="block-content tab-content">
+                    <div class="tab-pane active">
+                        <?php if(!(empty($menus) || (($menus instanceof \think\Collection || $menus instanceof \think\Paginator ) && $menus->isEmpty()))): ?>
+                        <div class="row data-table-toolbar">
+                            <div class="col-sm-12">
+                                <form action="<?php echo \think\Request::instance()->url(); ?>" method="get">
+                                <div class="toolbar-btn-action">
+                                    <a title="新增" class="btn btn-primary" href="<?php echo url('add', ['module' => \think\Request::instance()->param('group')]); ?>"><i class="fa fa-plus-circle"></i> 新增</a>
+                                    <button title="保存" type="button" class="btn btn-default disabled" id="save" disabled><i class="fa fa-check-circle-o"></i> 保存节点</button>
+                                    <button title="隐藏禁用节点" type="button" class="btn btn-danger" id="hide_disable"><i class="fa fa-eye-slash"></i> 隐藏禁用节点</button>
+                                    <button title="显示禁用节点" type="button" class="btn btn-info" id="show_disable"><i class="fa fa-eye"></i> 显示禁用节点</button>
+                                    <button title="展开所有节点" type="button" class="btn btn-success" id="expand-all"><i class="fa fa-plus"></i> 展开所有节点</button>
+                                    <button title="收起所有节点" type="button" class="btn btn-warning" id="collapse-all"><i class="fa fa-minus"></i> 收起所有节点</button>
+                                    <span class="form-inline">
+                                        <input class="form-control" type="text" name="max" value="<?php echo (\think\Request::instance()->get('max') ?: ''); ?>" placeholder="显示层数">
+                                    </span>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="dd" id="menu_list">
+                            <ol class="dd-list"><?php echo $menus; ?></ol>
+                        </div>
+                        <?php endif; if(!(empty($modules) || (($modules instanceof \think\Collection || $modules instanceof \think\Paginator ) && $modules->isEmpty()))): ?>
+                        <form action="<?php echo url(''); ?>" method="post" name="sort-form" class="sort-form">
+                            <button title="保存" type="submit" class="btn btn-success push-10 ajax-post" target-form="sort-form">保存排序</button>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="sortable" class="connectedSortable push-20">
+                                        <?php if(is_array($modules) || $modules instanceof \think\Collection || $modules instanceof \think\Paginator): $i = 0; $__LIST__ = $modules;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$module): $mod = ($i % 2 );++$i;?>
+                                        <div class="sortable-item pull-left">
+                                            <input type="hidden" name="sort[]" value="<?php echo $key; ?>">
+                                            <i class="<?php echo $module['icon']; ?>"></i> <?php echo $module['title']; ?>
+                                        </div>
+                                        <?php endforeach; endif; else: echo "" ;endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
         </div>
         <!-- END Page Content -->
@@ -667,14 +773,92 @@
 
 <!--页面js-->
 
+<script src="__LIBS__/jquery-nestable/jquery.nestable.js"></script>
+<script src="__LIBS__/jquery-ui/jquery-ui.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $.ajax({
-            url: '<?php echo url("checkUpdate"); ?>',
-            type: 'GET'
-        }).done(function(data) {
-            $('#product-auth').html(data.auth);
-            $('#product-update').html($('#product-update').text() + ' ' + data.update);
+    $(document).ready(function(){
+        // 模块拖拽
+        $( "#sortable" ).sortable({
+            connectWith: ".connectedSortable"
+        }).disableSelection();
+
+        // 保存节点
+        $('#save').click(function(){
+            Dolphin.loading();
+            $.post("<?php echo url('save'); ?>", {menus: $('#menu_list').nestable('serialize')}, function(data) {
+                Dolphin.loading('hide');
+                if (data.code) {
+                    $('#save').removeClass('btn-success').addClass('btn-default disabled');
+                    Dolphin.notify(data.msg, 'success');
+                } else {
+                    Dolphin.notify(data.msg, 'danger');
+                }
+            });
+        });
+
+        // 初始化节点拖拽
+        $('#menu_list').nestable({maxDepth:4}).on('change', function(){
+            $('#save').removeAttr("disabled").removeClass('btn-default disabled').addClass('btn-success');
+        });
+
+        // 隐藏禁用节点
+        $('#hide_disable').click(function(){
+            $('.dd-disable').hide();
+        });
+
+        // 显示禁用节点
+        $('#show_disable').click(function(){
+            $('.dd-disable').show();
+        });
+
+        // 展开所有节点
+        $('#expand-all').click(function(){
+            $('#menu_list').nestable('expandAll');
+        });
+
+        // 收起所有节点
+        $('#collapse-all').click(function(){
+            $('#menu_list').nestable('collapseAll');
+        });
+
+        // 禁用节点
+        $('.dd3-content').delegate('.disable', 'click', function(){
+            var self     = $(this);
+            var ids      = self.data('ids');
+            var ajax_url = '<?php echo url("disable", ["table" => "admin_menu"]); ?>';
+            Dolphin.loading();
+            $.post(ajax_url, {ids:ids}, function(data) {
+                Dolphin.loading('hide');
+                if (data.code) {
+                    self.attr('data-original-title', '启用').removeClass('disable').addClass('enable')
+                        .children().removeClass('fa-ban').addClass('fa-check-circle-o')
+                        .closest('.dd-item')
+                        .addClass('dd-disable');
+                } else {
+                    Dolphin.notify(data.msg, 'danger');
+                }
+            });
+            return false;
+        });
+
+        // 启用节点
+        $('.dd3-content').delegate('.enable', 'click', function(){
+            var self     = $(this);
+            var ids      = self.data('ids');
+            var ajax_url = '<?php echo url("enable", ["table" => "admin_menu"]); ?>';
+            Dolphin.loading();
+            $.post(ajax_url, {ids:ids}, function(data) {
+                Dolphin.loading('hide');
+                if (data.code) {
+                    self.attr('data-original-title', '禁用').removeClass('enable').addClass('disable')
+                        .children().removeClass('fa-check-circle-o').addClass('fa-ban')
+                        .closest('.dd-item')
+                        .removeClass('dd-disable');
+                } else {
+                    Dolphin.notify(data.msg, 'danger');
+                }
+            });
+            return false;
         });
     });
 </script>
