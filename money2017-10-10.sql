@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-10-10 16:31:35
+Date: 2017-10-10 23:21:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -602,7 +602,7 @@ CREATE TABLE `dp_money_details` (
   `balanceid` int(10) NOT NULL COMMENT '支付类型id',
   `create_time` char(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='金币详情表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='金币详情表';
 
 -- ----------------------------
 -- Records of dp_money_details
@@ -617,6 +617,8 @@ INSERT INTO `dp_money_details` VALUES ('8', '887', '房租 + 水电费', '6', '0
 INSERT INTO `dp_money_details` VALUES ('9', '11', '晚餐 排骨面', '7', '1', '2', '1507556231');
 INSERT INTO `dp_money_details` VALUES ('10', '-3.5', '早餐 稀饭鸡蛋', '2', '0', '2', '1507600251');
 INSERT INTO `dp_money_details` VALUES ('12', '-12', '午餐 快餐', '3', '0', '2', '1507616304');
+INSERT INTO `dp_money_details` VALUES ('13', '-10', '晚餐 燃面', '7', '0', '1', '1507639020');
+INSERT INTO `dp_money_details` VALUES ('14', '-7.5', '水果 香蕉', '14', '0', '1', '1507639090');
 
 -- ----------------------------
 -- Table structure for dp_type
@@ -628,7 +630,7 @@ CREATE TABLE `dp_type` (
   `pid` int(10) NOT NULL,
   `sort` tinyint(1) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='交易类型表';
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='交易类型表';
 
 -- ----------------------------
 -- Records of dp_type
@@ -645,6 +647,7 @@ INSERT INTO `dp_type` VALUES ('9', '房租水电', '6', '51');
 INSERT INTO `dp_type` VALUES ('10', '手机话费', '6', '52');
 INSERT INTO `dp_type` VALUES ('11', '宽带', '6', '53');
 INSERT INTO `dp_type` VALUES ('12', '礼物', '0', '60');
+INSERT INTO `dp_type` VALUES ('14', '水果', '0', '70');
 
 -- ----------------------------
 -- Table structure for today_deal

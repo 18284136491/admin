@@ -24943,3 +24943,930 @@
 [ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
 [ sql ] [ SQL ] SHOW COLUMNS FROM `dp_type` [ RunTime:0.014001s ]
 [ sql ] [ SQL ] SELECT * FROM `dp_type` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:18+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/edit/id/9.html
+[ info ] localhost/github/admin/admin.php/money/index/edit/id/9.html [运行时间：0.542031s][吞吐率：1.84req/s] [内存消耗：3,337.78kb] [文件加载：75]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'edit',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+  'id' => '9',
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.020001s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.022001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->edit[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/form/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'btn_hide',
+  12 => 'btn_title',
+  13 => 'form_items',
+  14 => 'tab_nav',
+  15 => 'post_url',
+  16 => 'form_data',
+  17 => 'extra_html',
+  18 => 'extra_js',
+  19 => 'extra_css',
+  20 => 'ajax_submit',
+  21 => 'hide_header',
+  22 => 'header_title',
+  23 => 'js_list',
+  24 => 'css_list',
+  25 => 'field_triggers',
+  26 => 'field_hide',
+  27 => 'field_values',
+  28 => 'field_clear',
+  29 => '_js_files',
+  30 => '_js_init',
+  31 => '_css_files',
+  32 => '_layout',
+  33 => 'btn_extra',
+  34 => 'submit_confirm',
+  35 => 'extend_js_list',
+  36 => 'extend_css_list',
+  37 => '_method',
+  38 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_money_details` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `m_d`.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,`t`.`typename` FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` WHERE  (  m_d.id = 9 ) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:18+08:00 ] 127.0.0.1 127.0.0.1 POST /github/admin/admin.php/money/index/gettypelist.html
+[ info ] localhost/github/admin/admin.php/money/index/gettypelist.html [运行时间：0.111006s][吞吐率：9.01req/s] [内存消耗：2,544.30kb] [文件加载：67]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'gettypelist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/edit/id/9.html',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://localhost',
+  'accept' => '*/*',
+  'content-length' => '0',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.032002s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.020001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->getTypeList[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_type` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_type` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:19+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/index.html
+[ info ] localhost/github/admin/admin.php/money/index/index.html [运行时间：0.112006s][吞吐率：8.93req/s] [内存消耗：3,430.86kb] [文件加载：79]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/edit/id/9.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.025001s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.015001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->index[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/table/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'tab_nav',
+  12 => 'hide_checkbox',
+  13 => 'extra_html',
+  14 => 'extra_js',
+  15 => 'extra_css',
+  16 => 'order_columns',
+  17 => 'filter_columns',
+  18 => 'filter_map',
+  19 => '_field_display',
+  20 => '_filter_content',
+  21 => '_filter',
+  22 => 'top_buttons',
+  23 => 'right_buttons',
+  24 => 'search',
+  25 => 'search_button',
+  26 => 'columns',
+  27 => 'pages',
+  28 => 'row_list',
+  29 => '_page_info',
+  30 => 'primary_key',
+  31 => '_table',
+  32 => 'js_list',
+  33 => 'css_list',
+  34 => 'validate',
+  35 => '_js_files',
+  36 => '_css_files',
+  37 => '_select_list',
+  38 => '_filter_time',
+  39 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.003001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_money_details` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `m_d`.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,`t`.`typename` FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` ORDER BY m_d.id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/add' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:21+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/add.html
+[ info ] localhost/github/admin/admin.php/money/index/add.html [运行时间：0.117007s][吞吐率：8.55req/s] [内存消耗：3,035.93kb] [文件加载：73]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'add',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.021001s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.018001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->add[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/form/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'btn_hide',
+  12 => 'btn_title',
+  13 => 'form_items',
+  14 => 'tab_nav',
+  15 => 'post_url',
+  16 => 'form_data',
+  17 => 'extra_html',
+  18 => 'extra_js',
+  19 => 'extra_css',
+  20 => 'ajax_submit',
+  21 => 'hide_header',
+  22 => 'header_title',
+  23 => 'js_list',
+  24 => 'css_list',
+  25 => 'field_triggers',
+  26 => 'field_hide',
+  27 => 'field_values',
+  28 => 'field_clear',
+  29 => '_js_files',
+  30 => '_js_init',
+  31 => '_css_files',
+  32 => '_layout',
+  33 => 'btn_extra',
+  34 => 'submit_confirm',
+  35 => 'extend_js_list',
+  36 => 'extend_css_list',
+  37 => '_method',
+  38 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002001s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.007001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/add' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/add' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:21+08:00 ] 127.0.0.1 127.0.0.1 POST /github/admin/admin.php/money/index/gettypelist.html
+[ info ] localhost/github/admin/admin.php/money/index/gettypelist.html [运行时间：0.084005s][吞吐率：11.90req/s] [内存消耗：2,544.28kb] [文件加载：67]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'gettypelist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/add.html',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://localhost',
+  'accept' => '*/*',
+  'content-length' => '0',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.021001s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.017001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->getTypeList[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.006001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_type` [ RunTime:0.008001s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_type` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:21+08:00 ] 127.0.0.1 127.0.0.1 POST /github/admin/admin.php/money/index/getbalancelist.html
+[ info ] localhost/github/admin/admin.php/money/index/getbalancelist.html [运行时间：0.073004s][吞吐率：13.70req/s] [内存消耗：2,544.07kb] [文件加载：67]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'getbalancelist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/add.html',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://localhost',
+  'accept' => '*/*',
+  'content-length' => '0',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.020001s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.019001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->getBalanceList[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_balance` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_balance` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:24+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/index.html
+[ info ] localhost/github/admin/admin.php/money/index/index.html [运行时间：0.133008s][吞吐率：7.52req/s] [内存消耗：3,167.18kb] [文件加载：77]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/add.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.035002s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.025001s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->index[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/table/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'tab_nav',
+  12 => 'hide_checkbox',
+  13 => 'extra_html',
+  14 => 'extra_js',
+  15 => 'extra_css',
+  16 => 'order_columns',
+  17 => 'filter_columns',
+  18 => 'filter_map',
+  19 => '_field_display',
+  20 => '_filter_content',
+  21 => '_filter',
+  22 => 'top_buttons',
+  23 => 'right_buttons',
+  24 => 'search',
+  25 => 'search_button',
+  26 => 'columns',
+  27 => 'pages',
+  28 => 'row_list',
+  29 => '_page_info',
+  30 => 'primary_key',
+  31 => '_table',
+  32 => 'js_list',
+  33 => 'css_list',
+  34 => 'validate',
+  35 => '_js_files',
+  36 => '_css_files',
+  37 => '_select_list',
+  38 => '_filter_time',
+  39 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.006001s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_money_details` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `m_d`.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,`t`.`typename` FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` ORDER BY m_d.id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/add' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:28+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/index.html
+[ info ] localhost/github/admin/admin.php/money/index/index.html [运行时间：0.132008s][吞吐率：7.58req/s] [内存消耗：3,167.18kb] [文件加载：77]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.032002s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.027002s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->index[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/table/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'tab_nav',
+  12 => 'hide_checkbox',
+  13 => 'extra_html',
+  14 => 'extra_js',
+  15 => 'extra_css',
+  16 => 'order_columns',
+  17 => 'filter_columns',
+  18 => 'filter_map',
+  19 => '_field_display',
+  20 => '_filter_content',
+  21 => '_filter',
+  22 => 'top_buttons',
+  23 => 'right_buttons',
+  24 => 'search',
+  25 => 'search_button',
+  26 => 'columns',
+  27 => 'pages',
+  28 => 'row_list',
+  29 => '_page_info',
+  30 => 'primary_key',
+  31 => '_table',
+  32 => 'js_list',
+  33 => 'css_list',
+  34 => 'validate',
+  35 => '_js_files',
+  36 => '_css_files',
+  37 => '_select_list',
+  38 => '_filter_time',
+  39 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.007000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.008001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.006001s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/index' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_money_details` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `m_d`.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,`t`.`typename` FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` ORDER BY m_d.id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/add' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_menu` WHERE  `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:30+08:00 ] 127.0.0.1 127.0.0.1 GET /github/admin/admin.php/money/index/edit/id/9.html
+[ info ] localhost/github/admin/admin.php/money/index/edit/id/9.html [运行时间：0.268015s][吞吐率：3.73req/s] [内存消耗：3,039.75kb] [文件加载：73]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'edit',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-length' => '',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+  'id' => '9',
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.055003s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.039002s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->edit[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ VIEW ] E:\phpStudy\WWW\Github\admin/application/common/builder/form/layout.html [ array (
+  0 => '_admin_base_layout',
+  1 => 'system_color',
+  2 => '_top_menus',
+  3 => '_top_menus_all',
+  4 => '_sidebar_menus',
+  5 => '_location',
+  6 => 'aside',
+  7 => '_pop',
+  8 => 'page_title',
+  9 => 'page_tips',
+  10 => 'tips_type',
+  11 => 'btn_hide',
+  12 => 'btn_title',
+  13 => 'form_items',
+  14 => 'tab_nav',
+  15 => 'post_url',
+  16 => 'form_data',
+  17 => 'extra_html',
+  18 => 'extra_js',
+  19 => 'extra_css',
+  20 => 'ajax_submit',
+  21 => 'hide_header',
+  22 => 'header_title',
+  23 => 'js_list',
+  24 => 'css_list',
+  25 => 'field_triggers',
+  26 => 'field_hide',
+  27 => 'field_values',
+  28 => 'field_clear',
+  29 => '_js_files',
+  30 => '_js_init',
+  31 => '_css_files',
+  32 => '_layout',
+  33 => 'btn_extra',
+  34 => 'submit_confirm',
+  35 => 'extend_js_list',
+  36 => 'extend_css_list',
+  37 => '_method',
+  38 => 'empty_tips',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.021001s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.017001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.021001s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.005001s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id LIMIT 10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `pid` = 0 ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`module`,`title`,`url_value`,`url_type`,`url_target`,`icon`,`params` FROM `dp_admin_menu` WHERE  `status` = 1  AND `module` = 'money' ORDER BY sort,id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `dp_admin_menu` WHERE  `pid` <> 0  AND `url_value` = 'money/index/edit' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`pid`,`title`,`url_value` FROM `dp_admin_menu` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `value` FROM `dp_admin_config` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_money_details` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT `m_d`.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,`t`.`typename` FROM `dp_money_details` `m_d` INNER JOIN `dp_type` `t` ON `t`.`id`=`m_d`.`typeid` WHERE  (  m_d.id = 9 ) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_user` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_attachment` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT `avatar` FROM `dp_admin_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_attachment` WHERE  `id` = 0 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-10-09T23:07:31+08:00 ] 127.0.0.1 127.0.0.1 POST /github/admin/admin.php/money/index/gettypelist.html
+[ info ] localhost/github/admin/admin.php/money/index/gettypelist.html [运行时间：0.182010s][吞吐率：5.49req/s] [内存消耗：2,544.30kb] [文件加载：67]
+[ info ] [ LANG ] E:\phpStudy\WWW\Github\admin\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'money',
+    1 => 'index',
+    2 => 'gettypelist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'Hm_lvt_aa2f9869e9b578122e4692de2bd9f80f=1505651992,1505747154,1505910571; dolphin_home_uid=1; dolphin_home_signin_token=e2589747e74c111ff897c7bf619769228db3ec82; PHPSESSID=2m4lr03rm5n50va15vut0i9q95; dolphin_home___forward__=%2Fgithub%2Fadmin%2Fadmin.php%2Fmoney%2Findex%2Findex.html',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://localhost/github/admin/admin.php/money/index/edit/id/9.html',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://localhost',
+  'accept' => '*/*',
+  'content-length' => '0',
+  'connection' => 'keep-alive',
+  'host' => 'localhost',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ CACHE ] INIT File
+[ info ] [ DB ] INIT mysql
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Config @app_begin [ RunTime:0.061004s ]
+[ info ] [ BEHAVIOR ] Run app\common\behavior\Hook @app_begin [ RunTime:0.040002s ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'dolphin_admin_',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ RUN ] app\money\admin\Index->getTypeList[ E:\phpStudy\WWW\Github\admin\application\money\admin\Index.php ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.013001s ] mysql:dbname=money;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_config` [ RunTime:0.014000s ]
+[ sql ] [ SQL ] SELECT `name`,`value`,`type` FROM `dp_admin_config` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_module` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`config` FROM `dp_admin_module` WHERE  `config` <> '' [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_hook` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_plugin` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name`,`status` FROM `dp_admin_plugin` WHERE  `status` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_hook_plugin` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_admin_hook_plugin` WHERE  `status` = 1 ORDER BY hook,sort [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_role` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `menu_auth` FROM `dp_admin_role` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_admin_menu` [ RunTime:0.004001s ]
+[ sql ] [ SQL ] SELECT `id`,`url_value` FROM `dp_admin_menu` WHERE  `id` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `dp_type` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT * FROM `dp_type` [ RunTime:0.000000s ]

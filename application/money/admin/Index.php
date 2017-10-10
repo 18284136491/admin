@@ -47,7 +47,6 @@ class Index extends Admin
             ->where($map)
             ->order('m_d.id desc')
             ->paginate();
-
         // 分页数据
         $page = $data_list->render();
 
@@ -96,7 +95,7 @@ class Index extends Admin
             }else{
                 $data['money'] = '-'.$data['money'];
             }
-
+print_R($data);die;
             $insert = Db::name('money_details')->insert($data);
             if ($insert) {
                 $this->success('新增成功', url('index'));
