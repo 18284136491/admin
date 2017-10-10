@@ -402,7 +402,7 @@ class Index extends Admin
     }
 
     /**
-     * getTypeList 获取类型列表
+     * getTypeList 获取交易类型
      * Author: dear
      */
     public function getTypeList(){

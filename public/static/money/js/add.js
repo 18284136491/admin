@@ -46,6 +46,44 @@ function checkedtype(data){
     $(data).attr('class','btn btn-success');
     $('#typeid').val(typeid);// 赋值给隐藏域
     $('#typepid').val(typepid);// 赋值给隐藏域
+
+    // 交易类型为转账的时候, 添加收款方式
+    if(data.attr('attr-typeid') == 100){
+        var html = '';
+        html += '<input class="form-control" type="hidden" id="receiveType" name="receiveType" value="">';
+        html += '<div class="form-group col-md-12 col-xs-12 " id="form_group_type">';
+        html += '<label class="col-xs-12" for="type">收款方式</label>';
+        html += '<div class="col-sm-12" id="receiveTypes">';
+        html += '</div>';
+        html += '</div>';
+        // 表单添加类型选项
+        $('#typename').after(html);
+        var balance_url = $('#getBalanceBtn').attr('action');
+        $.ajax({
+            url : balance_url,
+            type : 'post',
+            success : function(data){
+                console.log(data);
+                var text = '';
+                for(var i = 0; i < data.length; i++){
+                    text += '<button style="width:150px" class="btn btn-default" onclick="checkedBalance1($(this))" type="button" attr-balanceid="'+data[i].id+'">'+data[i].name+'</button>';
+                    text += '&nbsp&nbsp';
+                }
+                $('#receiveTypes').html(text);
+            }
+        })
+        // 赋值
+        function checkedBalance1(data){
+            console.log($('#receiveTypes button'));
+            // 还原默认样式
+            $('#receiveTypes button').attr('class','btn btn-default');
+            var balanceidid = data.attr('attr-balanceid');// 获取选中的类型id
+            $(data).attr('class','btn btn-info');
+            $('#receiveType').val(balanceidid);// 赋值给隐藏域
+        }
+    }
+
+
 }
 
 
@@ -67,7 +105,6 @@ $.ajax({
     url : balance_url,
     type : 'post',
     success : function(data){
-        console.log(data);
         var text = '';
         for(var i = 0; i < data.length; i++){
             text += '<button style="width:150px" class="btn btn-default" onclick="checkedBalance($(this))" type="button" attr-balanceid="'+data[i].id+'">'+data[i].name+'</button>';
