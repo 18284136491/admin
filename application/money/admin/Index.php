@@ -34,7 +34,6 @@ class Index extends Admin
     public function index()
     {
         cookie('__forward__', $_SERVER['REQUEST_URI']);
-
         // 获取查询条件
         $map = $this->getMap();
 
@@ -60,8 +59,8 @@ class Index extends Admin
                 ['id', 'ID'],
                 ['money', '交易金额'],
                 ['description', '交易描述'],
-                ['create_time', '交易时间'],
                 ['typename', '交易类型'],
+                ['create_time', '交易时间'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
