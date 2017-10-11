@@ -1,19 +1,17 @@
-// 交易类型按钮
-var fromid = $('form').attr('id','form');// 为表单添加id元素
-// 添加属性选择按钮
+$('form').attr('id','form');// 为表单添加id元素
+
+// 交易类型
 var html = '';
+    html += '<div class="form-group col-md-12 col-xs-12">';
     html += '<input class="form-control" type="hidden" id="typeid" name="typeid" value="">';
     html += '<input class="form-control" type="hidden" id="typepid" name="typepid" value="">';
-    html += '<div class="form-group col-md-12 col-xs-12 " id="form_group_type">';
     html += '<label class="col-xs-12" for="type">交易类型</label>';
     html += '<div class="col-sm-12" id="typename">';
     html += '</div>';
     html += '</div>';
-// 表单添加类型选项
-$(fromid).prepend(html);
-$('#getTypeList').hide();// 影藏元素
+$($('#form')).prepend(html);// 添加交易类型选项
+$('#getTypeList').hide();// 隐藏交易类型按钮
 var url = $('#getTypeList').attr('action');
-// 获取交易类型
 $.ajax({
     url : url,
     type : 'post',
@@ -34,72 +32,75 @@ $.ajax({
                 text += '</br></br>';
             }
         }
-        $('#typename').html(text);
+        $('#typename').html(text);// 渲染交易类型选项
     }
 })
-// 赋值
+// 交易类型隐藏域赋值
 function checkedtype(data){
-    // 还原默认样式
-    $('#typename button').attr('class','btn btn-default');
-    var typeid = data.attr('attr-typeid');// 获取选中的类型id
-    var typepid = data.attr('attr-typepid');// 获取选中的类型id
-    $(data).attr('class','btn btn-success');
-    $('#typeid').val(typeid);// 赋值给隐藏域
-    $('#typepid').val(typepid);// 赋值给隐藏域
+    $('#form_group_description').show();
+    $('#receive').remove();// 删除收款方式
+    $('#cover_charge').remove();// 删除转账手续费
+    $('#typename button').attr('class','btn btn-default');// 还原默认样式
+    var typeid = data.attr('attr-typeid');// 获取选中的交易类型id
+    var typepid = data.attr('attr-typepid');// 获取选中的交易类型pid
+    $(data).attr('class','btn btn-success');// 当前点击的交易类型样式
+    $('#typeid').val(typeid);// 交易类型id赋值给隐藏域
+    $('#typepid').val(typepid);// 交易类型pid赋值给隐藏域
 
     // 交易类型为转账的时候, 添加收款方式
     if(data.attr('attr-typeid') == 100){
+        $('#form_group_description').hide();
         var html = '';
+        html += '<div class="form-group col-md-12 col-xs-12" id="receive">';
         html += '<input class="form-control" type="hidden" id="receiveType" name="receiveType" value="">';
-        html += '<div class="form-group col-md-12 col-xs-12 " id="form_group_type">';
         html += '<label class="col-xs-12" for="type">收款方式</label>';
         html += '<div class="col-sm-12" id="receiveTypes">';
         html += '</div>';
         html += '</div>';
-        // 表单添加类型选项
-        $('#typename').after(html);
-        var balance_url = $('#getBalanceBtn').attr('action');
+
+        html += '<div class="form-group col-md-12 col-xs-12" id="cover_charge">';
+        html += '<label class="col-xs-12" for="type">转账手续费</label>';
+        html += '<div class="col-sm-12" id="">';
+        html += '<input class="form-control" type="text" id="cover_charge" name="cover_charge" value="" placeholder="请输入转账手续费">';
+        html += '</div>';
+        html += '</div>';
+        $($('#form_group_money')).before(html);// 添加收款方式选项
+
         $.ajax({
             url : balance_url,
             type : 'post',
             success : function(data){
-                console.log(data);
                 var text = '';
                 for(var i = 0; i < data.length; i++){
                     text += '<button style="width:150px" class="btn btn-default" onclick="checkedBalance1($(this))" type="button" attr-balanceid="'+data[i].id+'">'+data[i].name+'</button>';
                     text += '&nbsp&nbsp';
                 }
-                $('#receiveTypes').html(text);
+                $('#receiveTypes').html(text);// 渲染收款方式选项
             }
         })
-        // 赋值
-        function checkedBalance1(data){
-            console.log($('#receiveTypes button'));
-            // 还原默认样式
-            $('#receiveTypes button').attr('class','btn btn-default');
-            var balanceidid = data.attr('attr-balanceid');// 获取选中的类型id
-            $(data).attr('class','btn btn-info');
-            $('#receiveType').val(balanceidid);// 赋值给隐藏域
-        }
     }
-
-
+}
+// 收款方式隐藏域赋值
+function checkedBalance1(data){
+    $('#receiveTypes button').attr('class','btn btn-default');// 还原收款方式默认样式
+    var balanceidid = data.attr('attr-balanceid');// 获取选中的收款方式类型id
+    $(data).attr('class','btn btn-info');// 当前点击的收款方式样式
+    $('#receiveType').val(balanceidid);// 收款方式id赋值给隐藏域
 }
 
 
 
 // 支付方式
-var html1 = '';
-html1 += '<input class="form-control" type="hidden" id="balanceid" name="balanceid" value="">';
-html1 += '<div class="form-group col-md-12 col-xs-12 " id="form_group_type">';
-html1 += '<label class="col-xs-12" for="type">支付方式</label>';
-html1 += '<div class="col-sm-12" id="balancename">';
-html1 += '</div>';
-html1 += '</div>';
+var html = '';
+html += '<div class="form-group col-md-12 col-xs-12">';
+html += '<input class="form-control" type="hidden" id="balanceid" name="balanceid" value="">';
+html += '<label class="col-xs-12" for="type">支付方式</label>';
+html += '<div class="col-sm-12" id="balancename">';
+html += '</div>';
+html += '</div>';
+$($('#form')).prepend(html);// 添加支付方式选项
 
-// 表单添加类型选项
-$(fromid).prepend(html1);
-$('#getBalanceBtn').hide();// 余额类型
+$('#getBalanceBtn').hide();// 隐藏支付方式按钮
 var balance_url = $('#getBalanceBtn').attr('action');
 $.ajax({
     url : balance_url,
@@ -110,16 +111,14 @@ $.ajax({
             text += '<button style="width:150px" class="btn btn-default" onclick="checkedBalance($(this))" type="button" attr-balanceid="'+data[i].id+'">'+data[i].name+'</button>';
             text += '&nbsp&nbsp';
         }
-        $('#balancename').html(text);
+        $('#balancename').html(text);// 渲染支付方式选项
     }
 })
-// 赋值
+// 支付方式隐藏域赋值
 function checkedBalance(data){
-    // 还原默认样式
-    $('#balancename button').attr('class','btn btn-default');
-    var balanceidid = data.attr('attr-balanceid');// 获取选中的类型id
-    $(data).attr('class','btn btn-info');
-    $('#balanceid').val(balanceidid);// 赋值给隐藏域
+    $('#balancename button').attr('class','btn btn-default');// 还原默认样式
+    var balanceidid = data.attr('attr-balanceid');// 获取选中的支付方式id
+    $(data).attr('class','btn btn-info');// 当前点击的支付方式样式
+    $('#balanceid').val(balanceidid);// 支付方式赋值给隐藏域
 }
-
 

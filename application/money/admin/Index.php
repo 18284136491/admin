@@ -20,6 +20,7 @@ use app\admin\model\Access as AccessModel;
 use util\Tree;
 use think\Db;
 use think\Hook;
+use think\Response;
 
 /**
  * 用户默认控制器
@@ -56,12 +57,12 @@ class Index extends Admin
             ->setTableName('money_details') // 设置数据表名
             ->setSearch(['money' => '交易金额', 'description' => '交易描述']) // 设置搜索参数
             ->addColumns([ // 批量添加列
-                ['id', 'ID'],
+                ['create_time', '交易时间'],
                 ['name', '支付方式'],
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
                 ['description', '交易描述'],
-                ['create_time', '交易时间'],
+//                ['create_time', '交易时间'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
@@ -87,30 +88,25 @@ class Index extends Admin
             }
             $data['create_time'] = time();
 
-            // 判断交易项是收入还是支出
-            if(substr($data['money'],0,1) == '+'){
-                $data['money'] = substr($data['money'],1);
-            }elseif(substr($data['money'],0,1) == '-'){
-                $data['money'] = $data['money'];
+            // 添加数据并扣除交易金额
+            if(isset($data['receiveType'])){
+                $res = $this->Receive($data);
             }else{
-                $data['money'] = '-'.$data['money'];
+                $res = $this->Balance($data);
             }
-print_R($data);die;
-            $insert = Db::name('money_details')->insert($data);
-            if ($insert) {
+            if ($res) {
                 $this->success('新增成功', url('index'));
-            } else {
-                $this->error('新增失败');
             }
+            $this->error('新增失败');
         }
 
         // 获取交易类型
         $url = url('getTypeList');
-        $getTypeBtn = '<button id="getTypeList" type="button" action="'."$url".'" class="btn btn-default">获取交易类型</button>';
+        $getTypeBtn = '<button id="getTypeList" type="button" action="'."$url".'" class="btn btn-default">交易类型</button>';
 
         // 获取支付类型
         $balance_url = url('getBalanceList');
-        $getBalanceBtn = '<button id="getBalanceBtn" type="button" action="'."$balance_url".'" class="btn btn-default">获取余额类型</button>';
+        $getBalanceBtn = '<button id="getBalanceBtn" type="button" action="'."$balance_url".'" class="btn btn-default">支付方式</button>';
 
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
@@ -415,14 +411,125 @@ print_R($data);die;
      * getBalanceList 获取余额类型
      * Author: dear
      */
-    public function getBalanceList(){
+    public function getBalanceList($map = ''){
         // 返回交易类型数据
-        $type_data = Db::name('balance')->select();
+        $type_data = Db::name('balance')->where($map)->select();
 //        $data = sort_pid($type_data);
         return $type_data;
     }
 
+    /**
+     * Balance [新增交易扣款]
+     * @author dear
+     * @param $data
+     * @return void
+     */
+    private function Balance($data)
+    {
+        Db::startTrans();
+        // 余额种类表扣除余额
+        $balance_map['id'] = $data['balanceid'];
+        // 验证余额是否足够支付
+        $info = DB::name('balance')->where($balance_map)->find();
+        if($info['balance'] < $data['money']){
+            $this->error('余额不足');
+        }
+        $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$data['money']);
 
+        // 判断交易项是收入还是支出
+        if(substr($data['money'],0,1) == '+'){
+            $data['money'] = substr($data['money'],1);
+        }elseif(substr($data['money'],0,1) == '-'){
+            $data['money'] = $data['money'];
+        }else{
+            $data['money'] = '-'.$data['money'];
+        }
+        // 资金流水详情表添加记录
+        $insert = Db::name('money_details')->insert($data);
 
+        if($balance_res && $insert){
+            Db::commit();
+            return 1;
+        }
+        Db::rollback();
+        return 0;
+    }
 
+    /**
+     * receive [转账扣款和收款]
+     * @author dear
+     * @param $data
+     * @return void
+     */
+    private function Receive($data)
+    {
+        Db::startTrans();
+        $balance_map['id'] = $data['balanceid'];
+        $receive_money = $data['money'];// 转账金额
+        $cover_charge = $data['cover_charge'] ? $data['cover_charge'] : 0;// 转账手续费
+
+        // 验证余额是否足够支付
+        $info = DB::name('balance')->where($balance_map)->find();
+        if($info['balance'] < $receive_money){
+            $this->error('余额不足');
+        }
+        // 余额种类表扣除余额
+        $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$receive_money);
+
+        // 收款方式增加转账金额
+        $receive_map['id'] = $data['receiveType'];
+        $reality_money = $receive_money - $cover_charge;// 实际收款金额
+        // 收款金额为转账金额减去转账手续费
+        $receive_res = DB::name('balance')->where($receive_map)->setInc('balance',$reality_money);
+
+        // 支付类型名
+        $balance_map['id'] = $data['balanceid'];
+        $balance_data = $this->getBalanceList($balance_map);
+        $balance_name = $balance_data[0]['name'];
+        // 收款类型名
+        $receive_map['id'] = $data['receiveType'];
+        $receive_data = $this->getBalanceList($receive_map);
+        $receive_name = $receive_data[0]['name'];
+
+        $inc_description = "[收款]{$receive_name}收到{$balance_name}的转账,收款金额为:{$reality_money}元,手续费为:{$cover_charge}元";
+        $inc_data = [
+            'money' => $receive_money,
+            'description' => $inc_description,
+            'typeid' => $data['typeid'],
+            'type_pid' => $data['typepid'],
+            'balanceid' => $data['receiveType'],
+            'create_time' => time(),
+        ];
+        // 交易详情添加收款记录
+        $dec_res = Db::name('money_details')->insert($inc_data);
+
+        // 判断交易项是收入还是支出
+        if(substr($receive_money,0,1) == '+'){
+            $receive_money = substr($receive_money,1);
+        }elseif(substr($receive_money,0,1) == '-'){
+            $receive_money = $receive_money;
+        }else{
+            $receive_money = '-'.$receive_money;
+        }
+
+        $dec_description = "[转账]{$balance_name}向{$receive_name}发起转账,转账金额为:{$receive_money}元,手续费为:{$cover_charge}元";
+        // 交易详情转账扣款记录
+        $dec_data = [
+            'money' => $receive_money,
+            'description' => $dec_description,
+            'typeid' => $data['typeid'],
+            'type_pid' => $data['typepid'],
+            'balanceid' => $data['balanceid'],
+            'create_time' => time(),
+        ];
+        // 交易详情添加扣款记录
+        $dec_res = Db::name('money_details')->insert($dec_data);
+
+        if($balance_res && $receive_res && $dec_res){
+            Db::commit();
+            return 1;
+        }
+        Db::rollback();
+        return 0;
+    }
 }
