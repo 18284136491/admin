@@ -26,7 +26,7 @@ use think\Response;
  * 用户默认控制器
  * @package app\user\admin
  */
-class Index extends Admin
+class Statistics extends Admin
 {
     /**
      * 用户首页
@@ -38,8 +38,26 @@ class Index extends Admin
         // 获取查询条件
         $map = $this->getMap();
 
+
+
+        $field = "m_d.id,sum(m_d.money)money,t.typename";
+//        $field = "m_d.*,sum(m_d.money)money,t.typename";
+        $data_list = Db::name('money_details')
+            ->alias('m_d')
+            ->field($field)
+            ->join('type t','t.id = m_d.typeid')
+            ->group('typeid')
+            ->paginate();
+//        echo "<pre>";
+//        print_R($data_list);die;
+
+
+
+
+
+
         // 数据列表
-        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
+        /*$field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
         $data_list = DB::name('money_details')
             ->alias('m_d')
             ->field($field)
@@ -47,7 +65,7 @@ class Index extends Admin
             ->join('balance b','b.id = m_d.balanceid')
             ->where($map)
             ->order('m_d.id desc')
-            ->paginate();
+            ->paginate();*/
         // 分页数据
         $page = $data_list->render();
 
@@ -57,12 +75,8 @@ class Index extends Admin
             ->setTableName('money_details') // 设置数据表名
             ->setSearch(['money' => '交易金额', 'description' => '交易描述']) // 设置搜索参数
             ->addColumns([ // 批量添加列
-                ['create_time', '交易时间'],
-                ['name', '支付方式'],
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
-                ['description', '交易描述'],
-//                ['create_time', '交易时间'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
@@ -501,7 +515,7 @@ class Index extends Admin
             'create_time' => time(),
         ];
         // 交易详情添加收款记录
-        $inc_res = Db::name('money_details')->insert($inc_data);
+        $dec_res = Db::name('money_details')->insert($inc_data);
 
         // 判断交易项是收入还是支出
         if(substr($receive_money,0,1) == '+'){
@@ -525,7 +539,7 @@ class Index extends Admin
         // 交易详情添加扣款记录
         $dec_res = Db::name('money_details')->insert($dec_data);
 
-        if($balance_res && $receive_res && $inc_res && $dec_res){
+        if($balance_res && $receive_res && $dec_res){
             Db::commit();
             return 1;
         }

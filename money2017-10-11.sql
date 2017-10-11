@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-10-11 15:59:44
+Date: 2017-10-11 18:26:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -270,7 +270,7 @@ CREATE TABLE `dp_admin_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of dp_admin_log
@@ -287,6 +287,8 @@ INSERT INTO `dp_admin_log` VALUES ('9', '31', '1', '2130706433', 'admin_menu', '
 INSERT INTO `dp_admin_log` VALUES ('10', '30', '1', '2130706433', 'admin_menu', '231', '超级管理员 添加了节点：所属模块(money),所属节点ID(215),节点标题(支付方式管理),节点链接(money/paytpye/index)', '1', '1507609272');
 INSERT INTO `dp_admin_log` VALUES ('11', '32', '1', '2130706433', 'admin_menu', '231', '超级管理员 删除了节点：节点ID(231),节点标题(支付方式管理),节点链接(money/paytpye/index)', '1', '1507609465');
 INSERT INTO `dp_admin_log` VALUES ('12', '30', '1', '2130706433', 'admin_menu', '238', '超级管理员 添加了节点：所属模块(money),所属节点ID(215),节点标题(支付方式管理),节点链接(money/pay_tpye/index)', '1', '1507609490');
+INSERT INTO `dp_admin_log` VALUES ('13', '30', '1', '2130706433', 'admin_menu', '245', '超级管理员 添加了节点：所属模块(money),所属节点ID(215),节点标题(资金统计),节点链接(money/statistics/index)', '1', '1507711101');
+INSERT INTO `dp_admin_log` VALUES ('14', '31', '1', '2130706433', 'admin_menu', '245', '超级管理员 编辑了节点：节点ID(245)', '1', '1507711126');
 
 -- ----------------------------
 -- Table structure for dp_admin_menu
@@ -309,7 +311,7 @@ CREATE TABLE `dp_admin_menu` (
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '状态',
   `params` varchar(255) NOT NULL DEFAULT '' COMMENT '参数',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=245 DEFAULT CHARSET=utf8 COMMENT='后台菜单表';
+) ENGINE=MyISAM AUTO_INCREMENT=252 DEFAULT CHARSET=utf8 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of dp_admin_menu
@@ -429,6 +431,13 @@ INSERT INTO `dp_admin_menu` VALUES ('240', '238', 'money', '编辑', '', 'module
 INSERT INTO `dp_admin_menu` VALUES ('239', '238', 'money', '新增', '', 'module_admin', 'money/pay_tpye/add', '_self', '0', '1507609490', '1507609490', '3', '0', '1', '');
 INSERT INTO `dp_admin_menu` VALUES ('238', '215', 'money', '支付方式管理', '', 'module_admin', 'money/pay_tpye/index', '_self', '0', '1507609490', '1507609490', '3', '0', '1', '');
 INSERT INTO `dp_admin_menu` VALUES ('244', '238', 'money', '快速编辑', '', 'module_admin', 'money/pay_tpye/quickedit', '_self', '0', '1507609490', '1507609490', '3', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('245', '215', 'money', '资金统计', '', 'module_admin', 'money/statistics/index', '_self', '0', '1507711101', '1507711126', '4', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('246', '245', 'money', '新增', '', 'module_admin', 'money/statistics/add', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('247', '245', 'money', '编辑', '', 'module_admin', 'money/statistics/edit', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('248', '245', 'money', '删除', '', 'module_admin', 'money/statistics/delete', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('249', '245', 'money', '启用', '', 'module_admin', 'money/statistics/enable', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('250', '245', 'money', '禁用', '', 'module_admin', 'money/statistics/disable', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
+INSERT INTO `dp_admin_menu` VALUES ('251', '245', 'money', '快速编辑', '', 'module_admin', 'money/statistics/quickedit', '_self', '0', '1507711101', '1507711101', '5', '0', '1', '');
 
 -- ----------------------------
 -- Table structure for dp_admin_module
@@ -582,11 +591,11 @@ CREATE TABLE `dp_balance` (
 -- ----------------------------
 -- Records of dp_balance
 -- ----------------------------
-INSERT INTO `dp_balance` VALUES ('1', '微信', '10.00');
-INSERT INTO `dp_balance` VALUES ('2', '支付宝', '0.00');
+INSERT INTO `dp_balance` VALUES ('1', '微信', '313.13');
+INSERT INTO `dp_balance` VALUES ('2', '支付宝', '1052.24');
 INSERT INTO `dp_balance` VALUES ('3', '招商银行', '10.00');
 INSERT INTO `dp_balance` VALUES ('4', '农业银行', '10.00');
-INSERT INTO `dp_balance` VALUES ('5', '中国银行', '10.00');
+INSERT INTO `dp_balance` VALUES ('5', '中国银行', '8157.75');
 INSERT INTO `dp_balance` VALUES ('6', '现金', '10.00');
 
 -- ----------------------------
@@ -596,13 +605,13 @@ DROP TABLE IF EXISTS `dp_money_details`;
 CREATE TABLE `dp_money_details` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `money` char(10) NOT NULL COMMENT '交易金额',
-  `description` varchar(20) NOT NULL COMMENT '交易描述',
+  `description` varchar(100) NOT NULL COMMENT '交易描述',
   `typeid` int(10) NOT NULL COMMENT '交易类型id',
   `type_pid` int(10) NOT NULL COMMENT '交易大类型id',
   `balanceid` int(10) NOT NULL COMMENT '支付 || 收款类型id',
   `create_time` char(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='金币详情表';
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COMMENT='金币详情表';
 
 -- ----------------------------
 -- Records of dp_money_details
@@ -613,7 +622,7 @@ INSERT INTO `dp_money_details` VALUES ('3', '-10', '晚餐 腌面', '7', '1', '1
 INSERT INTO `dp_money_details` VALUES ('5', '-3.5', '早餐 稀饭鸡蛋', '2', '1', '1', '1507556103');
 INSERT INTO `dp_money_details` VALUES ('6', '-14', '午餐 快餐', '3', '1', '2', '1507556165');
 INSERT INTO `dp_money_details` VALUES ('7', '-48', '送父亲大人 车载手机支架', '12', '0', '2', '1507556196');
-INSERT INTO `dp_money_details` VALUES ('8', '-887', '房租 + 水电费', '6', '0', '2', '1507556214');
+INSERT INTO `dp_money_details` VALUES ('8', '-887', '房租 + 水电费', '9', '6', '2', '1507556214');
 INSERT INTO `dp_money_details` VALUES ('9', '-11', '晚餐 排骨面', '7', '1', '2', '1507556231');
 INSERT INTO `dp_money_details` VALUES ('10', '-3.5', '早餐 稀饭鸡蛋', '2', '0', '2', '1507600251');
 INSERT INTO `dp_money_details` VALUES ('12', '-12', '午餐 快餐', '3', '0', '2', '1507616304');
@@ -621,6 +630,9 @@ INSERT INTO `dp_money_details` VALUES ('13', '-10', '晚餐 燃面', '7', '0', '
 INSERT INTO `dp_money_details` VALUES ('14', '-7.5', '水果 香蕉', '14', '0', '1', '1507639090');
 INSERT INTO `dp_money_details` VALUES ('15', '-3.5', '早餐 稀饭鸡蛋', '2', '0', '2', '1507687622');
 INSERT INTO `dp_money_details` VALUES ('24', '-10', '午餐 快餐', '3', '0', '2', '1507705936');
+INSERT INTO `dp_money_details` VALUES ('41', '-20', '礼物 女神生日送腾讯会员一个月', '12', '0', '1', '1507716154');
+INSERT INTO `dp_money_details` VALUES ('42', '1000', '[收款]支付宝收到中国银行的转账,收款金额100元,手续费0元', '100', '0', '2', '1507716512');
+INSERT INTO `dp_money_details` VALUES ('43', '-1000', '[转账]中国银行向支付宝发起转账,转账金额100元,手续费0元', '100', '0', '5', '1507716512');
 
 -- ----------------------------
 -- Table structure for dp_type
