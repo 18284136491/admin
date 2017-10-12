@@ -38,42 +38,28 @@ class Statistics extends Admin
         // 获取查询条件
         $map = $this->getMap();
 
-
-
         $field = "m_d.id,sum(m_d.money)money,t.typename";
-//        $field = "m_d.*,sum(m_d.money)money,t.typename";
         $data_list = Db::name('money_details')
             ->alias('m_d')
             ->field($field)
             ->join('type t','t.id = m_d.typeid')
             ->group('typeid')
-            ->paginate();
-//        echo "<pre>";
-//        print_R($data_list);die;
-
-
-
-
-
-
-        // 数据列表
-        /*$field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
-        $data_list = DB::name('money_details')
-            ->alias('m_d')
-            ->field($field)
-            ->join('type t','t.id = m_d.typeid')
-            ->join('balance b','b.id = m_d.balanceid')
             ->where($map)
-            ->order('m_d.id desc')
-            ->paginate();*/
+            ->paginate();
         // 分页数据
         $page = $data_list->render();
+        // 图表按钮
+        $echarts = [
+            'title' => '切换图表',
+            'id'  => 'echarts',
+            'action'  => url('echarts'),
+        ];
 
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
             ->setPageTitle('资金流水明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['money' => '交易金额', 'description' => '交易描述']) // 设置搜索参数
+            ->setSearch(['money' => '交易金额', 'typename' => '交易类型']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
@@ -81,6 +67,9 @@ class Statistics extends Admin
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
             ->addRightButton('edit') // 添加授权按钮
+            ->addTopButton('echarts',$echarts)
+            ->js('echarts')
+            ->js('echarts1')
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染页面
@@ -409,6 +398,45 @@ class Statistics extends Admin
         $details = '字段(' . $field . ')，原值(' . $config . ')，新值：(' . $value . ')';
         return parent::quickEdit(['user_edit', 'admin_user', $id, UID, $details]);
     }
+
+
+    public function echarts()
+    {
+        // 获取大类型消费数据
+        $d_field = 'sum(m_d.money)money,t.typename typename1 ';
+        $d_data = Db::name('type')
+            ->alias('t')
+            ->field($d_field)
+            ->join('money_details m_d', 't.id = m_d.type_pid')
+            ->group('m_d.type_pid')
+            ->select();
+        echo array_sum(array_column($d_data,'money'));
+        print_R($d_data);
+
+        // 获取小类型消费数据
+
+        $x_field = 'sum(m_d.money)money,t.typename typename1 ';
+        $x_data = Db::name('type')
+            ->alias('t')
+            ->field($x_field)
+            ->join('money_details m_d', 't.id = m_d.typeid')
+            ->group('m_d.typeid')
+            ->select();
+        echo array_sum(array_column($x_data,'money'));
+        print_r($x_data);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * getTypeList 获取交易类型

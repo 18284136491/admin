@@ -37,7 +37,6 @@ class Index extends Admin
         cookie('__forward__', $_SERVER['REQUEST_URI']);
         // 获取查询条件
         $map = $this->getMap();
-
         // 数据列表
         $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
         $data_list = DB::name('money_details')
@@ -50,19 +49,17 @@ class Index extends Admin
             ->paginate();
         // 分页数据
         $page = $data_list->render();
-
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
             ->setPageTitle('资金流水明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['money' => '交易金额', 'description' => '交易描述']) // 设置搜索参数
+            ->setSearch(['money' => '交易金额', 'typename' => '交易类型', 'create_time' => '交易时间']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['create_time', '交易时间'],
                 ['name', '支付方式'],
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
                 ['description', '交易描述'],
-//                ['create_time', '交易时间'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮

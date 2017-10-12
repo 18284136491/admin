@@ -183,7 +183,6 @@ class PayTpye extends Admin
         }
         Db::name('balance')->where($map)->update($data);
         $this->success('操作成功',url('index'));
-
     }
 
     /**
