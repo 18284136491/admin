@@ -400,30 +400,45 @@ class Statistics extends Admin
     }
 
 
+    /**
+     * echarts 消费数据
+     * Author: dear
+     */
     public function echarts()
     {
         // 获取大类型消费数据
-        $d_field = 'sum(m_d.money)money,t.typename typename1 ';
+        $d_field = 'sum(m_d.money)value,t.typename name';
         $d_data = Db::name('type')
             ->alias('t')
             ->field($d_field)
             ->join('money_details m_d', 't.id = m_d.type_pid')
             ->group('m_d.type_pid')
             ->select();
-        echo array_sum(array_column($d_data,'money'));
-        print_R($d_data);
+//        echo array_sum(array_column($d_data,'money'));
 
         // 获取小类型消费数据
-
-        $x_field = 'sum(m_d.money)money,t.typename typename1 ';
+        $x_field = 'sum(m_d.money)value,t.typename name';
         $x_data = Db::name('type')
             ->alias('t')
             ->field($x_field)
             ->join('money_details m_d', 't.id = m_d.typeid')
             ->group('m_d.typeid')
             ->select();
-        echo array_sum(array_column($x_data,'money'));
-        print_r($x_data);
+//        echo array_sum(array_column($x_data,'value'));
+
+        $total = array_merge($d_data,$x_data);
+        $total_name = array_column($total,'name');
+
+        $res = [
+            'total' => $total_name,
+            'd_data' => $d_data,
+            'x_data' => $x_data,
+        ];
+        print_r($x_data);die;
+//        print_r($x_data);
+//        print_R($d_data);
+//        print_R($total_name);
+        return $res;
     }
 
 
