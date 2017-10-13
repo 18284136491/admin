@@ -407,6 +407,7 @@ class Statistics extends Admin
     {
         $map = $this->request->param();
 
+        $map['m_d.money'] = ['neq',0];
         // 获取大类型消费数据
         $d_field = 'sum(m_d.money)value,t.typename name';
         $d_data = Db::name('type')
@@ -416,6 +417,12 @@ class Statistics extends Admin
             ->group('m_d.type_pid')
             ->order('m_d.type_pid')
             ->select();
+        // 删除金额为空的数据
+        foreach($d_data as $key => $val){
+            if($val['value'] == 0){
+                unset($d_data[$key]);
+            }
+        }
 
         // 获取小类型消费数据
         $x_field = 'sum(m_d.money)value,t.typename name';
@@ -426,8 +433,20 @@ class Statistics extends Admin
             ->group('m_d.typeid')
             ->order('m_d.type_pid')
             ->select();
+        // 删除金额为空的数据
+        foreach($x_data as $key1 => $val1){
+            if($val1['value'] == 0){
+                unset($x_data[$key1]);
+            }
+        }
 
+        // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
+        foreach($total as $key2 => $val2){
+            if($val2['value'] == 0){
+                unset($total[$key2]);
+            }
+        }
         $total_name = array_column($total,'name');
 
         $res = [
@@ -456,7 +475,6 @@ class Statistics extends Admin
     public function getBalanceList($map = ''){
         // 返回交易类型数据
         $type_data = Db::name('balance')->where($map)->select();
-//        $data = sort_pid($type_data);
         return $type_data;
     }
 
