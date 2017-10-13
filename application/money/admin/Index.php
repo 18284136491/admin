@@ -53,7 +53,7 @@ class Index extends Admin
         return ZBuilder::make('table')
             ->setPageTitle('资金流水明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['money' => '交易金额', 'typename' => '交易类型', 'create_time' => '交易时间']) // 设置搜索参数
+            ->setSearch(['name' => '支付方式', 'typename' => '交易类型']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['create_time', '交易时间'],
                 ['name', '支付方式'],
@@ -84,7 +84,6 @@ class Index extends Admin
                 $this->error('请选择交易类型');
             }
             $data['create_time'] = time();
-
             // 添加数据并扣除交易金额
             if(isset($data['receiveType'])){
                 $res = $this->Receive($data);

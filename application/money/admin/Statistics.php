@@ -413,8 +413,8 @@ class Statistics extends Admin
             ->field($d_field)
             ->join('money_details m_d', 't.id = m_d.type_pid')
             ->group('m_d.type_pid')
+            ->order('m_d.type_pid')
             ->select();
-//        echo array_sum(array_column($d_data,'money'));
 
         // 获取小类型消费数据
         $x_field = 'sum(m_d.money)value,t.typename name';
@@ -423,8 +423,8 @@ class Statistics extends Admin
             ->field($x_field)
             ->join('money_details m_d', 't.id = m_d.typeid')
             ->group('m_d.typeid')
+            ->order('m_d.type_pid')
             ->select();
-//        echo array_sum(array_column($x_data,'value'));
 
         $total = array_merge($d_data,$x_data);
         $total_name = array_column($total,'name');
@@ -434,10 +434,6 @@ class Statistics extends Admin
             'd_data' => $d_data,
             'x_data' => $x_data,
         ];
-        print_r($x_data);die;
-//        print_r($x_data);
-//        print_R($d_data);
-//        print_R($total_name);
         return $res;
     }
 

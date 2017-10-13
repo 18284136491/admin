@@ -4,7 +4,7 @@ $('form').attr('id','form');// 为表单添加id元素
 var html = '';
     html += '<div class="form-group col-md-12 col-xs-12">';
     html += '<input class="form-control" type="hidden" id="typeid" name="typeid" value="">';
-    html += '<input class="form-control" type="hidden" id="typepid" name="typepid" value="">';
+    html += '<input class="form-control" type="hidden" id="typepid" name="type_pid" value="">';
     html += '<label class="col-xs-12" for="type">交易类型</label>';
     html += '<div class="col-sm-12" id="typename">';
     html += '</div>';
