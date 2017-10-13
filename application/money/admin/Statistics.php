@@ -63,7 +63,6 @@ class Statistics extends Admin
             ->addColumns([ // 批量添加列
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
-                ['right_button', '操作', 'btn']
             ])
             ->addTopButton('echarts',$echarts)
             ->js('laydate/laydate')
