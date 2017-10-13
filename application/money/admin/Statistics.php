@@ -543,7 +543,7 @@ class Statistics extends Admin
             'create_time' => time(),
         ];
         // 交易详情添加收款记录
-        $dec_res = Db::name('money_details')->insert($inc_data);
+        $inc_res = Db::name('money_details')->insert($inc_data);
 
         // 判断交易项是收入还是支出
         if(substr($receive_money,0,1) == '+'){
@@ -567,7 +567,7 @@ class Statistics extends Admin
         // 交易详情添加扣款记录
         $dec_res = Db::name('money_details')->insert($dec_data);
 
-        if($balance_res && $receive_res && $dec_res){
+        if($balance_res && $receive_res && $inc_res && $dec_res){
             Db::commit();
             return 1;
         }
