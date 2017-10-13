@@ -65,9 +65,8 @@ class Statistics extends Admin
                 ['money', '交易金额'],
                 ['right_button', '操作', 'btn']
             ])
-            ->addTopButtons('add') // 批量添加顶部按钮
-            ->addRightButton('edit') // 添加授权按钮
             ->addTopButton('echarts',$echarts)
+            ->js('laydate/laydate')
             ->js('echarts')
             ->js('echarts1')
             ->setRowList($data_list) // 设置表格数据
@@ -405,15 +404,23 @@ class Statistics extends Admin
      */
     public function echarts()
     {
-        $map = $this->request->param();
-
-        $map['m_d.money'] = ['neq',0];
+        $start = $this->request->param('start');
+        $end = $this->request->param('end');
+        $map = [];
+        if($start && $end){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['between',[$start,$end]];
+        }elseif($start){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['>=',$start];
+        }elseif($end){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['<=',$end];
+        }
         // 获取大类型消费数据
         $d_field = 'sum(m_d.money)value,t.typename name';
         $d_data = Db::name('type')
             ->alias('t')
             ->field($d_field)
             ->join('money_details m_d', 't.id = m_d.type_pid')
+            ->where($map)
             ->group('m_d.type_pid')
             ->order('m_d.type_pid')
             ->select();
@@ -430,6 +437,7 @@ class Statistics extends Admin
             ->alias('t')
             ->field($x_field)
             ->join('money_details m_d', 't.id = m_d.typeid')
+            ->where($map)
             ->group('m_d.typeid')
             ->order('m_d.type_pid')
             ->select();

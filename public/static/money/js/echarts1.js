@@ -1,3 +1,16 @@
+var html = '';
+    html += '<form class="form-inline" style="float:left">'
+    html += '开始时间：<input class="form-control" width="30%" style="margin-right:20px;" value="" id="start" placeholder="start">';
+    html += '结束时间：<input class="form-control" width="30%" style="margin-right:20px;" value="" id="end" placeholder="end">';
+    html += '</form>';
+$('#echarts').before(html);// 渲染时间搜索框
+laydate.render({
+    elem: '#start'
+});
+laydate.render({
+    elem: '#end'
+});
+
 $(document).on('click','#echarts',function(){
     var echarts_url = $('#echarts').attr('action');// 获取获取图表数据url
     $('#echarts').text('切换列表');// 列表状态点击后改变按钮文字
@@ -5,11 +18,14 @@ $(document).on('click','#echarts',function(){
     $('.table-responsive').hide();// 隐藏列表
     $('.pagination-info').hide();// 隐藏分页数据
     $('.search-bar').hide();// 隐藏条件搜索框
+
+    var start = $('#start').val();
+    var end = $('#end').val();
     $.ajax({
         url : echarts_url,
         type : 'post',
+        data : {'start':start,'end':end},
         success : function(data){
-            console.log(data);
             var text = '';
             text += '<div class="block-content tab-content">'
             text += '<div id="main" style="width: 100%;height:500px;margin:0 auto"></div>';
@@ -108,3 +124,5 @@ $(document).on('click','#echarts',function(){
         $('#main').hide();// 隐藏图表
     })
 })
+
+
