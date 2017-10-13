@@ -399,13 +399,14 @@ class Statistics extends Admin
         return parent::quickEdit(['user_edit', 'admin_user', $id, UID, $details]);
     }
 
-
     /**
      * echarts 消费数据
      * Author: dear
      */
     public function echarts()
     {
+        $map = $this->request->param();
+
         // 获取大类型消费数据
         $d_field = 'sum(m_d.money)value,t.typename name';
         $d_data = Db::name('type')
@@ -436,18 +437,6 @@ class Statistics extends Admin
         ];
         return $res;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * getTypeList 获取交易类型

@@ -4,6 +4,7 @@ $(document).on('click','#echarts',function(){
     $('#echarts').attr('id','list');// 列表状态点击后改变按钮id
     $('.table-responsive').hide();// 隐藏列表
     $('.pagination-info').hide();// 隐藏分页数据
+    $('.search-bar').hide();// 隐藏条件搜索框
     $.ajax({
         url : echarts_url,
         type : 'post',
@@ -11,9 +12,8 @@ $(document).on('click','#echarts',function(){
             console.log(data);
             var text = '';
             text += '<div class="block-content tab-content">'
-            text += '<div id="main" style="width: 100%;height:400px;margin:0 auto"></div>';
+            text += '<div id="main" style="width: 100%;height:800px;margin:0 auto"></div>';
             text += '</div>';
-            // $('.table-responsive').html(text);// 替换图表框
             $('.table-responsive').after(text);// 替换图表框
 
             var myChart = echarts.init(document.getElementById('main'));
@@ -104,6 +104,7 @@ $(document).on('click','#echarts',function(){
         $('#list').text('切换图表');// 图表状态点击后改变按钮文字
         $('#list').attr('id','echarts');// 图标状态点击后改变按钮id
         $('.table-responsive').show();// 显示列表
+        $('.search-bar').show();// 显示条件搜索框
         $('#main').hide();// 隐藏图表
     })
 })

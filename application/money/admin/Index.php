@@ -157,12 +157,14 @@ class Index extends Admin
             ->join('balance b','b.id = m_d.balanceid')
             ->where("m_d.id = $id")
             ->find();
+
+        $type = substr($info['money'],0,1) == '-' ? 0 : 1;// 判断当前交易是收款还是付款
         // 获取交易类型
         $url = url('getTypeList');
         $getTypeBtn = '<button id="getTypeList" attr_typeid="'.$info['typeid'].'"  attr_typepid="'.$info['type_pid'].'" type="button" action="'."$url".'" class="btn btn-default">获取类型列表</button>';
         // 获取支付类型
         $balance_url = url('getBalanceList');
-        $getBalanceBtn = '<button id="getBalanceBtn" attr-balanceid="'.$info['balanceid'].'" type="button" action="'."$balance_url".'" class="btn btn-default">获取支付类型</button>';
+        $getBalanceBtn = '<button id="getBalanceBtn" attr-type="'.$type.'" attr-balanceid="'.$info['balanceid'].'" type="button" action="'."$balance_url".'" class="btn btn-default">获取支付类型</button>';
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('编辑') // 设置页面标题
@@ -492,7 +494,7 @@ class Index extends Admin
             'money' => $receive_money,
             'description' => $inc_description,
             'typeid' => $data['typeid'],
-            'type_pid' => $data['typepid'],
+            'type_pid' => $data['type_pid'],
             'balanceid' => $data['receiveType'],
             'create_time' => time(),
         ];
@@ -514,7 +516,7 @@ class Index extends Admin
             'money' => $receive_money,
             'description' => $dec_description,
             'typeid' => $data['typeid'],
-            'type_pid' => $data['typepid'],
+            'type_pid' => $data['type_pid'],
             'balanceid' => $data['balanceid'],
             'create_time' => time(),
         ];
