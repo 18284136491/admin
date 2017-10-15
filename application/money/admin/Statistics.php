@@ -429,6 +429,7 @@ class Statistics extends Admin
                 unset($d_data[$key]);
             }
         }
+        $d_data = array_values($d_data);
 
         // 获取小类型消费数据
         $x_field = 'sum(m_d.money)value,t.typename name';
@@ -446,6 +447,7 @@ class Statistics extends Admin
                 unset($x_data[$key1]);
             }
         }
+        $x_data = array_values($x_data);
 
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);

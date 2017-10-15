@@ -45,7 +45,7 @@ class Index extends Admin
             ->join('type t','t.id = m_d.typeid')
             ->join('balance b','b.id = m_d.balanceid')
             ->where($map)
-            ->order('m_d.id desc')
+            ->order('m_d.create_time desc')
             ->paginate();
         // 分页数据
         $page = $data_list->render();
