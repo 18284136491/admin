@@ -403,6 +403,7 @@ class Statistics extends Admin
      */
     public function echarts()
     {
+        // 资金流水类型统计
         $start = $this->request->param('start');
         $end = $this->request->param('end');
         $map = [];
@@ -425,7 +426,7 @@ class Statistics extends Admin
             ->select();
         // 删除金额为空的数据
         foreach($d_data as $key => $val){
-            if($val['value'] == 0){
+            if($val['value'] >= 0){
                 unset($d_data[$key]);
             }
         }
@@ -443,7 +444,7 @@ class Statistics extends Admin
             ->select();
         // 删除金额为空的数据
         foreach($x_data as $key1 => $val1){
-            if($val1['value'] == 0){
+            if($val1['value'] >= 0){
                 unset($x_data[$key1]);
             }
         }
@@ -452,16 +453,35 @@ class Statistics extends Admin
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
         foreach($total as $key2 => $val2){
-            if($val2['value'] == 0){
+            if($val2['value'] >= 0){
                 unset($total[$key2]);
             }
         }
         $total_name = array_column($total,'name');
 
+
+        // 支付方式统计
+        $b_field = 'sum(if(m_d.money,m_d.money,0))value,b.name';
+        $b_data = Db::name('balance')
+            ->alias('b')
+            ->field($b_field)
+            ->join('money_details m_d', 'b.id = m_d.balanceid')
+            ->where($map)
+            ->group('b.id')
+            ->order('b.id asc')
+            ->select();
+        // 删除金额为空的数据
+        foreach($b_data as $key3 => $val3){
+            if($val3['value'] >= 0){
+                unset($b_data[$key3]);
+            }
+        }
+        $b_data = array_values($b_data);
         $res = [
             'total' => $total_name,
             'd_data' => $d_data,
             'x_data' => $x_data,
+            'b_data' => $b_data,
         ];
         return $res;
     }

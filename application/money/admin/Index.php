@@ -161,12 +161,12 @@ class Index extends Admin
                 if(substr($up_money,0,1) == '-'){
                     $up_money = substr($up_money,1);// 原支付金额
                     // 支付方式扣除差额
-                    $dec_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);
                 }else{
                     // 支付方式扣除差额
-                    $inc_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);
                 }
-                if($dec_res && $inc_res){
+                if($up_res){
                     Db::commit();
                 }
                 Db::rollback();
