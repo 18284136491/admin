@@ -39,18 +39,26 @@ class PayTpye extends Admin
         $map = $this->getMap();
 
         // 数据列表
-        $data_list = DB::name('balance')->where($map)->paginate();
+        $field = 'b.id,b.name,b.balance,sum(if(m_d.money,m_d.money,0))money';
+        $data_list = DB::name('balance')
+            ->alias('b')
+            ->field($field)
+            ->join('money_details m_d', 'm_d.balanceid = b.id','left')
+            ->where($map)
+            ->group('b.id')
+            ->paginate();
 
         // 分页数据
         $page = $data_list->render();
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
             ->setPageTitle('支付方式列表') // 设置页面标题
-            ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['id' => 'id', 'pid' => 'pid', 'typename' => '交易名称']) // 设置搜索参数
+            ->setTableName('balance') // 设置数据表名
+            ->setSearch(['name' => '交易名称']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['name', '类型名称'],
                 ['balance', '可用余额'],
+                ['money', '总消费'],
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮

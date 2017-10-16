@@ -400,7 +400,7 @@ class Index extends Admin
      */
     public function getTypeList(){
         // 返回交易类型数据
-        $type_data = Db::name('type')->select();
+        $type_data = Db::name('type')->group('sort asc')->select();
         $data = sort_pid($type_data);
         return $data;
     }

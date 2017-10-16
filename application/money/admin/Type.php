@@ -223,7 +223,8 @@ class Type extends Admin
      */
     public function getTypeList(){
         // 返回交易类型数据
-        $type_data = Db::name('type')->where('pid',0)->select();
+        $map['pid'] = 0;
+        $type_data = Db::name('type')->where($map)->group('sort asc')->select();
         return $type_data;
     }
 }
