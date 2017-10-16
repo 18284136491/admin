@@ -126,11 +126,51 @@ class Index extends Admin
     public function edit($id = null)
     {
         if ($id === null) $this->error('缺少参数');
-
         // 保存数据
         if ($this->request->isPost()) {
             $data = $this->request->post();
+            // 获取原付款方式
+            $map['id'] = $data['id'];
+            $info = Db::name('money_details')->where($map)->find();
+            // 判断支付方式是否改变
+            if($info['balanceid'] != $data['balanceid']){
+                $money = substr($info['money'],1);// 原支付金额
+                $inc_map['id'] = $info['id'];// 原付款方式
 
+                Db::startTrans();
+                // 原付款方式金额还原
+                $inc_res = Db::name('balance')->where('id',$info['balanceid'])->setInc('balance',$money);
+                // 现支付方式扣款
+                $dec_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$money);
+
+                if($inc_res && $dec_res){
+                    Db::commit();
+                }
+                Db::rollback();
+            }
+
+            // 判断金额是否修改
+            if($info['money'] != $data['money']){
+
+                $money = $info['money'];// 原交易金额
+                // 原金额与修改金额差额
+                $up_money = $data['money'] > $money ? $data['money'] - $money : '-'.($money - $data['money']);
+
+                Db::startTrans();
+                // 如果差额为负数
+                if(substr($up_money,0,1) == '-'){
+                    $up_money = substr($up_money,1);// 原支付金额
+                    // 支付方式扣除差额
+                    $dec_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);
+                }else{
+                    // 支付方式扣除差额
+                    $inc_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);
+                }
+                if($dec_res && $inc_res){
+                    Db::commit();
+                }
+                Db::rollback();
+            }
             // 判断交易项是收入还是支出
             if(substr($data['money'],0,1) == '+'){
                 $data['money'] = substr($data['money'],1);
@@ -139,6 +179,8 @@ class Index extends Admin
             }else{
                 $data['money'] = '-'.$data['money'];
             }
+
+            // 交易详情
             $update = Db::name('money_details')->update($data);
             if ($update) {
                 // 记录行为
