@@ -38,6 +38,7 @@ class Statistics extends Admin
         // 获取查询条件
         $map = $this->getMap();
 
+        $map['m_d.money'] = ['<=', '0'];
         $field = "m_d.id,sum(m_d.money)money,t.typename";
         $data_list = Db::name('money_details')
             ->alias('m_d')
@@ -67,7 +68,7 @@ class Statistics extends Admin
             ->addTopButton('echarts',$echarts)
             ->js('laydate/laydate')
             ->js('echarts')
-            ->js('echarts1')
+            ->js('liability')
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染页面
@@ -403,10 +404,10 @@ class Statistics extends Admin
      */
     public function echarts()
     {
-        // 资金流水类型统计
+        /***************资金流水类型统计***************/
         $start = $this->request->param('start');
         $end = $this->request->param('end');
-        $map = [];
+        $map['m_d.money'] = ['<=', 0];
         if($start && $end){
             $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['between',[$start,$end]];
         }elseif($start){
@@ -452,17 +453,11 @@ class Statistics extends Admin
 
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
-        foreach($total as $key2 => $val2){
-            if($val2['value'] >= 0){
-                unset($total[$key2]);
-            }
-        }
-        $total_name = array_column($total,'name');
+        $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
 
-
-        // 支付方式统计
-        $b_field = 'sum(if(m_d.money,m_d.money,0))value,b.name';
-        $b_data = Db::name('balance')
+        /***************支付方式支出统计***************/
+        $b_field = 'sum(if(m_d.money,m_d.money,0))value,b.name,m_d.balanceid';
+        $b_d_data = Db::name('balance')
             ->alias('b')
             ->field($b_field)
             ->join('money_details m_d', 'b.id = m_d.balanceid')
@@ -471,17 +466,47 @@ class Statistics extends Admin
             ->order('b.id asc')
             ->select();
         // 删除金额为空的数据
-        foreach($b_data as $key3 => $val3){
+        foreach($b_d_data as $key3 => $val3){
             if($val3['value'] >= 0){
                 unset($b_data[$key3]);
             }
         }
-        $b_data = array_values($b_data);
+        $b_d_data = array_values($b_d_data);
+        $b_money = array_sum(array_column($b_d_data,'value'));
+
+        // 根据付款方式查询对应的消费数据
+        foreach($b_d_data as $key4 => $val4){
+            $b_x_data[] = Db::name('money_details')
+                ->alias('m_d')
+                ->field('sum(m_d.money)value,t.typename name')
+                ->join('type t', 't.id = m_d.typeid')
+                ->where('m_d.balanceid',$val4['balanceid'])
+                ->where($map)
+                ->group('typeid')
+                ->order('m_d.balanceid')
+                ->select();
+            $b_d_data[$key4] = array_splice($val4,0,2);
+        }
+
+        // 三维数组改二维数组
+        foreach($b_x_data as $key6 => $val6){
+            foreach($val6 as $key7 => $val7){
+                $b_x_datas[] = $val6[$key7];
+            }
+        }
+
+        // 消费总金额
+        $b_total = array_merge($b_d_data,$b_x_datas);
+
         $res = [
-            'total' => $total_name,
+            'total' => $total,
             'd_data' => $d_data,
             'x_data' => $x_data,
-            'b_data' => $b_data,
+            'total_money' => $total_money,
+            'b_total' => $b_total,
+            'b_d_data' => $b_d_data,
+            'b_x_data' => $b_x_datas,
+            'b_money' => $b_money,
         ];
         return $res;
     }

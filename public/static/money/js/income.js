@@ -31,19 +31,16 @@ $(document).on('click','#echarts',function(){
         success : function(data){
             var text = '';
             text += '<div class="block-content tab-content">'
-            text += '<div id="main" style="width:100%;height:500px;margin:0 auto"></div>';
-            text += '<div id="main1" style="width:100%;height:500px;margin:0 auto"></div>';
+            text += '<div id="main" style="width:100%;height:600px;margin:0 auto"></div>';
             text += '</div>';
             $('.table-responsive').after(text);// 替换图表框
 
             var myChart = echarts.init(document.getElementById('main'));
-            var myChart1 = echarts.init(document.getElementById('main1'));
             // 资金流水支出计数据
             option = {
                 title : {
-                    text: '资金流水统计',
-                    // subtext: '纯属虚构',
-                    subtext: '',
+                    text: '收入项统计',
+                    subtext: '总收入: '+data.total_money,
                     x:'left'
                 },
                 tooltip: {
@@ -80,87 +77,13 @@ $(document).on('click','#echarts',function(){
                         type:'pie',
                         // radius: ['40%', '55%'],
                         radius: ['70%', '80%'],
-
                         data:data.x_data
                     }
                 ]
             };
 
-            // 支付类型支出数据
-            option1 = {
-                title : {
-                    text: '支付方式支付统计',
-                    // subtext: '纯属虚构',
-                    x:'left'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{b} : {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'right',
-                    data: data.b_data
-                },
-                series : [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius : '55%',
-                        center: ['50%', '60%'],
-                        data:data.b_data,
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
-            };
-
-            /*option = {
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    x: 'left',
-                    data:data.total
-                },
-                series: [
-                    {
-                        name:'访问来源',
-                        type:'pie',
-                        selectedMode: 'single',
-                        radius: [0, '30%'],
-
-                        label: {
-                            normal: {
-                                position: 'inner'
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data:data.d_data
-                    },
-                    {
-                        name:'访问来源',
-                        type:'pie',
-                        radius: ['40%', '55%'],
-
-                        data:data.x_data
-                    }
-                ]
-            };*/
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
-            myChart1.setOption(option1);
         }
     })
 
@@ -173,6 +96,7 @@ $(document).on('click','#echarts',function(){
         $('.search-bar').show();// 显示条件搜索框
         $('.data-table-toolbar').children('.row').show();// 隐藏分页数据
         $('#main').hide();// 隐藏图表
+        $('#main1').hide();// 隐藏图表
     })
 })
 

@@ -26,7 +26,7 @@ use think\Response;
  * 用户默认控制器
  * @package app\user\admin
  */
-class Index extends Admin
+class Income extends Admin
 {
     /**
      * 用户首页
@@ -37,33 +37,38 @@ class Index extends Admin
         cookie('__forward__', $_SERVER['REQUEST_URI']);
         // 获取查询条件
         $map = $this->getMap();
-        // 数据列表
-        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i')create_time,t.typename,b.name";
-        $data_list = DB::name('money_details')
+
+        $map['m_d.money'] = ['>=', '0'];
+        $field = "m_d.id,sum(m_d.money)money,b.name";
+        $data_list = Db::name('money_details')
             ->alias('m_d')
             ->field($field)
-            ->join('type t','t.id = m_d.typeid')
             ->join('balance b','b.id = m_d.balanceid')
+            ->group('typeid')
             ->where($map)
-            ->order('m_d.create_time desc')
             ->paginate();
         // 分页数据
         $page = $data_list->render();
+        // 图表按钮
+        $echarts = [
+            'title' => '切换图表',
+            'id'  => 'echarts',
+            'action'  => url('echarts'),
+        ];
+
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
-            ->setPageTitle('资金流水明细') // 设置页面标题
+            ->setPageTitle('收入项明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['name' => '支付方式', 'typename' => '交易类型']) // 设置搜索参数
+            ->setSearch(['name' => '收款方式', 'typename' => '交易类型']) // 设置搜索参数
             ->addColumns([ // 批量添加列
-                ['create_time', '交易时间'],
-                ['name', '支付方式'],
-                ['typename', '交易类型'],
+                ['name', '收款方式'],
                 ['money', '交易金额'],
-                ['description', '交易描述'],
-                ['right_button', '操作', 'btn']
             ])
-            ->addTopButtons('add') // 批量添加顶部按钮
-            ->addRightButton('edit') // 添加授权按钮
+            ->addTopButton('echarts',$echarts)
+            ->js('laydate/laydate')
+            ->js('echarts')
+            ->js('income')
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染页面
@@ -83,7 +88,7 @@ class Index extends Admin
             if(!$data['typeid']){
                 $this->error('请选择交易类型');
             }
-            $data['create_time'] = $data['create_time'] ? strtotime($data['create_time']) : time();
+            $data['create_time'] = time();
 
             // 添加数据并扣除交易金额
             if(isset($data['receiveType'])){
@@ -114,7 +119,6 @@ class Index extends Admin
             ])
             ->addBtn($getTypeBtn)
             ->addBtn($getBalanceBtn)
-            ->js('laydate/laydate')
             ->js('add')
             ->fetch();
     }
@@ -128,53 +132,11 @@ class Index extends Admin
     public function edit($id = null)
     {
         if ($id === null) $this->error('缺少参数');
+
         // 保存数据
         if ($this->request->isPost()) {
             $data = $this->request->post();
-            $data['create_time'] = $data['create_time'] ? strtotime($data['create_time']) : time();
 
-            // 获取原付款方式
-            $map['id'] = $data['id'];
-            $info = Db::name('money_details')->where($map)->find();
-            // 判断支付方式是否改变
-            if($info['balanceid'] != $data['balanceid']){
-                $money = substr($info['money'],1);// 原支付金额
-                $inc_map['id'] = $info['id'];// 原付款方式
-
-                Db::startTrans();
-                // 原付款方式金额还原
-                $inc_res = Db::name('balance')->where('id',$info['balanceid'])->setInc('balance',$money);
-                // 现支付方式扣款
-                $dec_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$money);
-
-                if($inc_res && $dec_res){
-                    Db::commit();
-                }
-                Db::rollback();
-            }
-
-            // 判断金额是否修改
-            if($info['money'] != $data['money']){
-
-                $money = $info['money'];// 原交易金额
-                // 原金额与修改金额差额
-                $up_money = $data['money'] > $money ? $data['money'] - $money : '-'.($money - $data['money']);
-
-                Db::startTrans();
-                // 如果差额为负数
-                if(substr($up_money,0,1) == '-'){
-                    $up_money = substr($up_money,1);// 原支付金额
-                    // 支付方式扣除差额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);
-                }else{
-                    // 支付方式扣除差额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);
-                }
-                if($up_res){
-                    Db::commit();
-                }
-                Db::rollback();
-            }
             // 判断交易项是收入还是支出
             if(substr($data['money'],0,1) == '+'){
                 $data['money'] = substr($data['money'],1);
@@ -183,8 +145,6 @@ class Index extends Admin
             }else{
                 $data['money'] = '-'.$data['money'];
             }
-
-            // 交易详情
             $update = Db::name('money_details')->update($data);
             if ($update) {
                 // 记录行为
@@ -194,7 +154,7 @@ class Index extends Admin
             }
         }
 
-        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d %H:%i:%s')create_time,t.typename,b.id balanceid";
+        $field = "m_d.*,from_unixtime(m_d.create_time,'%Y-%m-%d')create_time,t.typename,b.id balanceid";
         // 获取数据
         $info = DB::name('money_details')
             ->alias('m_d')
@@ -203,14 +163,12 @@ class Index extends Admin
             ->join('balance b','b.id = m_d.balanceid')
             ->where("m_d.id = $id")
             ->find();
-
-        $type = substr($info['money'],0,1) == '-' ? 0 : 1;// 判断当前交易是收款还是付款
         // 获取交易类型
         $url = url('getTypeList');
         $getTypeBtn = '<button id="getTypeList" attr_typeid="'.$info['typeid'].'"  attr_typepid="'.$info['type_pid'].'" type="button" action="'."$url".'" class="btn btn-default">获取类型列表</button>';
         // 获取支付类型
         $balance_url = url('getBalanceList');
-        $getBalanceBtn = '<button id="getBalanceBtn" attr-time="'.$info['create_time'].'" attr-type="'.$type.'" attr-balanceid="'.$info['balanceid'].'" type="button" action="'."$balance_url".'" class="btn btn-default">获取支付类型</button>';
+        $getBalanceBtn = '<button id="getBalanceBtn" attr-balanceid="'.$info['balanceid'].'" type="button" action="'."$balance_url".'" class="btn btn-default">获取支付类型</button>';
         // 使用ZBuilder快速创建表单
         return ZBuilder::make('form')
             ->setPageTitle('编辑') // 设置页面标题
@@ -221,10 +179,152 @@ class Index extends Admin
             ])
             ->addBtn($getTypeBtn)
             ->addBtn($getBalanceBtn)
-            ->js('laydate/laydate')
             ->js('edit')
             ->setFormData($info) // 设置表单数据
             ->fetch();
+    }
+
+    /**
+     * 授权
+     * @param string $tab tab分组名
+     * @param int $uid 用户id
+     * @author 蔡伟明 <314013107@qq.com>
+     * @return mixed
+     */
+    public function access($tab = '', $uid = 0)
+    {
+        if ($uid === 0) $this->error('缺少参数');
+
+        // 保存数据
+        if ($this->request->isPost()) {
+            $post = $this->request->post();
+            list($module, $group) = explode('_', $post['tab_name']);
+
+            // 先删除原有授权
+            $map['module'] = $module;
+            $map['group']  = $group;
+            $map['uid']    = $post['uid'];
+            if (false === AccessModel::where($map)->delete()) {
+                $this->error('清除旧授权失败');
+            }
+
+            $data = [];
+            // 授权节点
+            $nids = [];
+            if (isset($post['group_auth'])) {
+                $nids = $post['group_auth'];
+                foreach ($post['group_auth'] as $nid) {
+                    $data[] = [
+                        'nid'    => $nid,
+                        'uid'    => $post['uid'],
+                        'group'  => $group,
+                        'module' => $module
+                    ];
+                }
+                // 添加新的授权
+                $AccessModel = new AccessModel;
+                if (!$AccessModel->saveAll($data)) {
+                    $this->error('操作失败');
+                }
+            }
+
+            // 记录行为
+            $nids = !empty($nids) ? implode(',', $nids) : '无';
+            $details = "模块($module)，分组($group)，授权节点ID($nids)";
+            action_log('user_access', 'admin_user', $uid, UID, $details);
+            $this->success('操作成功', 'index');
+        }
+
+        // 获取所有授权配置信息
+        $list_access = ModuleModel::where('access', 'neq', '')->column('access', 'name');
+        if ($list_access) {
+            $curr_access  = '';
+            $group_table  = '';
+            $tab_list     = [];
+            foreach ($list_access as $module => &$groups) {
+                $groups = json_decode($groups, true);
+
+                foreach ($groups as $group => $access) {
+                    // 如果分组为空，则默认为第一个
+                    if ($tab == '') {
+                        // 当前分组名
+                        $tab = $module. '_' . $group;
+                        // 节点表名
+                        $group_table = $access['table_name'];
+                        // 当前权限配置信息
+                        $curr_access = $access;
+                    }
+
+                    // 配置分组信息
+                    $tab_list[$module. '_' . $group] = [
+                        'title' => $access['tab_title'],
+                        'url'   => url('access', [
+                            'tab' => $module. '_' . $group,
+                            'uid' => $uid
+                        ])
+                    ];
+                }
+            }
+
+            list($module, $group) = explode('_', $tab);
+            if ($curr_access == '') {
+                $curr_access = $list_access[$module][$group];
+                $group_table = $curr_access['table_name'];
+            }
+
+            // tab分组信息
+            $tab_nav = [
+                'tab_list' => $tab_list,
+                'curr_tab' => $tab
+            ];
+            $this->assign('tab_nav', $tab_nav);
+
+            // 获取授权数据
+            $groups = '';
+            if (isset($curr_access['model_name']) && $curr_access['model_name'] != '') {
+                $class = "app\\{$module}\\model\\".$curr_access['model_name'];
+                $model = new $class;
+
+                try{
+                    $groups = $model->access();
+                }catch(\Exception $e){
+                    $this->error('模型：'.$class."缺少“access”方法");
+                }
+            } else {
+                // 没有设置模型名，则按表名获取数据
+                $fileds = [
+                    $curr_access['primary_key'],
+                    $curr_access['parent_id'],
+                    $curr_access['node_name']
+                ];
+
+                $groups = Db::name($group_table)->order($curr_access['primary_key'])->field($fileds)->select();
+            }
+
+            if ($groups) {
+                // 查询当前用户的权限
+                $map['module'] = $module;
+                $map['group']  = $group;
+                $map['uid']    = $uid;
+                $node_access = AccessModel::where($map)->column('nid');
+                $this->assign('node_access', $node_access);
+                $this->assign('tab_name', $tab);
+                $this->assign('field_access', $curr_access);
+                $tree_config = [
+                    'title' => $curr_access['node_name'],
+                    'id'    => $curr_access['primary_key'],
+                    'pid'   => $curr_access['parent_id']
+                ];
+                $this->assign('groups', Tree::config($tree_config)->toList($groups));
+            }
+        }
+
+        $page_tips = isset($curr_access['page_tips']) ? $curr_access['page_tips'] : '';
+        $tips_type = isset($curr_access['tips_type']) ? $curr_access['tips_type'] : 'info';
+        $this->assign('page_tips', $page_tips);
+        $this->assign('tips_type', $tips_type);
+        $this->assign('page_title', '数据授权');
+        return $this->fetch();
     }
 
     /**
@@ -299,12 +399,78 @@ class Index extends Admin
     }
 
     /**
+     * echarts 消费数据
+     * Author: dear
+     */
+    public function echarts()
+    {
+        /***************资金流水类型统计***************/
+        $start = $this->request->param('start');
+        $end = $this->request->param('end');
+        $map['m_d.money'] = ['>=', 0];
+        if($start && $end){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['between',[$start,$end]];
+        }elseif($start){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['>=',$start];
+        }elseif($end){
+            $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['<=',$end];
+        }
+        // 获取收款方式数据
+        $d_field = 'b.name,sum(m_d.money)value';
+        $d_data = Db::name('money_details')
+            ->alias('m_d')
+            ->field($d_field)
+            ->join('balance b', 'b.id = m_d.balanceid')
+            ->join('type t', 't.id = m_d.typeid')
+            ->where($map)
+            ->group('b.id')
+            ->order('b.id')
+            ->select();
+        // 删除金额为空的数据
+        foreach($d_data as $key => $val){
+            if($val['value'] <= 0){
+                unset($d_data[$key]);
+            }
+        }
+        $d_data = array_values($d_data);
+
+        // 获取收款明细数据
+        $x_field = 'sum(m_d.money)value,t.typename name';
+        $x_data = Db::name('money_details')
+            ->alias('m_d')
+            ->field($x_field)
+            ->join('type t', 't.id = m_d.typeid')
+            ->where($map)
+            ->group('m_d.balanceid')
+            ->order('m_d.balanceid')
+            ->select();
+        // 删除金额为空的数据
+        foreach($x_data as $key1 => $val1){
+            if($val1['value'] <= 0){
+                unset($x_data[$key1]);
+            }
+        }
+        $x_data = array_values($x_data);
+        // 删除金额为空的数据
+        $total = array_merge($d_data,$x_data);
+        $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
+
+        $res = [
+            'total' => $total,
+            'd_data' => $d_data,
+            'x_data' => $x_data,
+            'total_money' => $total_money,
+        ];
+        return $res;
+    }
+
+    /**
      * getTypeList 获取交易类型
      * Author: dear
      */
     public function getTypeList(){
         // 返回交易类型数据
-        $type_data = Db::name('type')->group('sort asc')->select();
+        $type_data = Db::name('type')->select();
         $data = sort_pid($type_data);
         return $data;
     }
@@ -316,7 +482,6 @@ class Index extends Admin
     public function getBalanceList($map = ''){
         // 返回交易类型数据
         $type_data = Db::name('balance')->where($map)->select();
-//        $data = sort_pid($type_data);
         return $type_data;
     }
 
@@ -398,7 +563,7 @@ class Index extends Admin
             'money' => $receive_money,
             'description' => $inc_description,
             'typeid' => $data['typeid'],
-            'type_pid' => $data['type_pid'],
+            'type_pid' => $data['typepid'],
             'balanceid' => $data['receiveType'],
             'create_time' => time(),
         ];
@@ -420,7 +585,7 @@ class Index extends Admin
             'money' => $receive_money,
             'description' => $dec_description,
             'typeid' => $data['typeid'],
-            'type_pid' => $data['type_pid'],
+            'type_pid' => $data['typepid'],
             'balanceid' => $data['balanceid'],
             'create_time' => time(),
         ];
