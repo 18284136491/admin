@@ -37,7 +37,7 @@ class PayTpye extends Admin
 
         // 获取查询条件
         $map = $this->getMap();
-
+        $map['m_d.money'] = ['<=', 0];
         // 数据列表
         $field = 'b.id,b.name,b.balance,sum(if(m_d.money,m_d.money,0))money';
         $data_list = DB::name('balance')

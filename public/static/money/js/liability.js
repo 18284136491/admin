@@ -31,8 +31,8 @@ $(document).on('click','#echarts',function(){
         success : function(data){
             var text = '';
             text += '<div class="block-content tab-content">'
-            text += '<div id="main" style="width:100%;height:600px;margin:0 auto"></div>';
-            text += '<div id="main1" style="width:100%;height:600px;margin:0 auto"></div>';
+            text += '<div id="main" style="width:100%;height:800px;margin:0 auto"></div>';
+            text += '<div id="main1" style="width:100%;height:800px;margin:0 auto"></div>';
             text += '</div>';
             $('.table-responsive').after(text);// 替换图表框
 
