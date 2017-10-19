@@ -68,7 +68,7 @@ class Statistics extends Admin
             ->addTopButton('echarts',$echarts)
             ->js('laydate/laydate')
             ->js('echarts')
-            ->js('liability')
+            ->js('expenditure')
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染页面

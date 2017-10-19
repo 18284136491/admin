@@ -42,7 +42,7 @@ $(document).on('click','#echarts',function(){
             option = {
                 title : {
                     text: '资金流水统计',
-                    subtext: '总消费: '+data.total_money,
+                    subtext: '总支出流水: '+data.total_money,
                     x:'left'
                 },
                 tooltip: {
@@ -89,7 +89,7 @@ $(document).on('click','#echarts',function(){
             option1 = {
                 title : {
                     text: '支付方式统计',
-                    subtext: '总消费: '+data.b_money,
+                    subtext: '总支出流水: '+data.b_money,
                     x:'left'
                 },
                 tooltip: {
