@@ -425,13 +425,6 @@ class Statistics extends Admin
             ->group('m_d.type_pid')
             ->order('m_d.type_pid')
             ->select();
-        // 删除金额为空的数据
-        foreach($d_data as $key => $val){
-            if($val['value'] >= 0){
-                unset($d_data[$key]);
-            }
-        }
-        $d_data = array_values($d_data);
 
         // 获取小类型消费数据
         $x_field = 'sum(m_d.money)value,t.typename name';
@@ -443,13 +436,6 @@ class Statistics extends Admin
             ->group('m_d.typeid')
             ->order('m_d.type_pid')
             ->select();
-        // 删除金额为空的数据
-        foreach($x_data as $key1 => $val1){
-            if($val1['value'] >= 0){
-                unset($x_data[$key1]);
-            }
-        }
-        $x_data = array_values($x_data);
 
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
@@ -465,13 +451,6 @@ class Statistics extends Admin
             ->group('b.id')
             ->order('b.id asc')
             ->select();
-        // 删除金额为空的数据
-        foreach($b_d_data as $key3 => $val3){
-            if($val3['value'] >= 0){
-                unset($b_data[$key3]);
-            }
-        }
-        $b_d_data = array_values($b_d_data);
         $b_money = array_sum(array_column($b_d_data,'value'));
 
         // 根据付款方式查询对应的消费数据

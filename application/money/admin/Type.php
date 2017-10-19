@@ -45,7 +45,7 @@ class Type extends Admin
         $page = $data_list->render();
         // 使用ZBuilder快速创建数据表格
         return ZBuilder::make('table')
-            ->setPageTitle('金币交易列表') // 设置页面标题
+            ->setPageTitle('交易类型列表') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
             ->setSearch(['id' => 'id', 'pid' => 'pid', 'typename' => '交易名称']) // 设置搜索参数
             ->addColumns([ // 批量添加列

@@ -426,13 +426,6 @@ class Income extends Admin
             ->group('b.id')
             ->order('b.id')
             ->select();
-        // 删除金额为空的数据
-        foreach($d_data as $key => $val){
-            if($val['value'] <= 0){
-                unset($d_data[$key]);
-            }
-        }
-        $d_data = array_values($d_data);
 
         // 获取收款明细数据
         $x_field = 'sum(m_d.money)value,t.typename name';
@@ -444,13 +437,6 @@ class Income extends Admin
             ->group('m_d.balanceid')
             ->order('m_d.balanceid')
             ->select();
-        // 删除金额为空的数据
-        foreach($x_data as $key1 => $val1){
-            if($val1['value'] <= 0){
-                unset($x_data[$key1]);
-            }
-        }
-        $x_data = array_values($x_data);
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
         $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
