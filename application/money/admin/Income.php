@@ -44,7 +44,7 @@ class Income extends Admin
             ->alias('m_d')
             ->field($field)
             ->join('balance b','b.id = m_d.balanceid')
-            ->group('typeid')
+            ->group('balanceid')
             ->where($map)
             ->paginate();
         // 分页数据
@@ -434,18 +434,24 @@ class Income extends Admin
             ->field($x_field)
             ->join('type t', 't.id = m_d.typeid')
             ->where($map)
-            ->group('m_d.balanceid')
+            ->group('m_d.typeid')
             ->order('m_d.balanceid')
             ->select();
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
         $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
 
+        // 银证转账金额
+        $map['m_d.typeid'] = ['eq', '109'];
+        $stock_money = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->find();
+
         $res = [
             'total' => $total,
             'd_data' => $d_data,
             'x_data' => $x_data,
             'total_money' => $total_money,
+            'stock' => $stock_money['money'],
+            'reality' => $total_money - $stock_money['money'],
         ];
         return $res;
     }

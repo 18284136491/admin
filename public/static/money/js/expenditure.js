@@ -42,7 +42,9 @@ $(document).on('click','#echarts',function(){
             option = {
                 title : {
                     text: '资金流水统计',
-                    subtext: '总支出流水: '+data.total_money,
+                    subtext: '总支出流水金额: '+ data.total_money + '\n\n'
+                    + '充值转账金额: '+ data.zhuan + '\n\n'
+                    + '实际支出金额: '+ data.reality,
                     x:'left'
                 },
                 tooltip: {
@@ -79,7 +81,6 @@ $(document).on('click','#echarts',function(){
                         type:'pie',
                         // radius: ['40%', '55%'],
                         radius: ['70%', '80%'],
-
                         data:data.x_data
                     }
                 ]
@@ -89,7 +90,9 @@ $(document).on('click','#echarts',function(){
             option1 = {
                 title : {
                     text: '支付方式统计',
-                    subtext: '总支出流水: '+data.b_money,
+                    subtext: '总支出流水金额: '+ data.total_money + '\n\n'
+                    + '转账金额: '+ data.zhuan + '\n\n'
+                    + '实际支出金额: '+ (Number(data.total_money) + Number(data.zhuan) ),
                     x:'left'
                 },
                 tooltip: {
@@ -124,7 +127,6 @@ $(document).on('click','#echarts',function(){
                         name:'资金流水',
                         type:'pie',
                         radius: ['70%', '80%'],
-
                         data:data.b_x_data
                     }
                 ]

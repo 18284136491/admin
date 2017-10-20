@@ -40,7 +40,9 @@ $(document).on('click','#echarts',function(){
             option = {
                 title : {
                     text: '收入项统计',
-                    subtext: '总收入: '+data.total_money,
+                    subtext: '总收入: '+ data.total_money + '\n\n'
+                    + '银证转账金额: '+ data.stock + '\n\n'
+                    + '实际收入金额: '+ data.reality,
                     x:'left'
                 },
                 tooltip: {

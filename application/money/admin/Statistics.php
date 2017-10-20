@@ -466,16 +466,19 @@ class Statistics extends Admin
                 ->select();
             $b_d_data[$key4] = array_splice($val4,0,2);
         }
-
         // 三维数组改二维数组
         foreach($b_x_data as $key6 => $val6){
             foreach($val6 as $key7 => $val7){
                 $b_x_datas[] = $val6[$key7];
             }
         }
-
         // 消费总金额
         $b_total = array_merge($b_d_data,$b_x_datas);
+
+        // 转账的收款金额
+        $map['m_d.typeid'] = ['eq', 108];
+        $map['m_d.money'] = ['>=', 0];
+        $zhuan = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->find();
 
         $res = [
             'total' => $total,
@@ -486,6 +489,8 @@ class Statistics extends Admin
             'b_d_data' => $b_d_data,
             'b_x_data' => $b_x_datas,
             'b_money' => $b_money,
+            'zhuan' => $zhuan['money'],// 转账金额
+            'reality' => $total_money + $zhuan['money'],// 实际金额
         ];
         return $res;
     }

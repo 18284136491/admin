@@ -54,7 +54,7 @@ class PayTpye extends Admin
         return ZBuilder::make('table')
             ->setPageTitle('支付方式列表') // 设置页面标题
             ->setTableName('balance') // 设置数据表名
-            ->setSearch(['name' => '交易名称']) // 设置搜索参数
+            ->setSearch(['name' => '类型名称']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['name', '类型名称'],
                 ['balance', '可用余额'],
