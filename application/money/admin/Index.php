@@ -191,7 +191,7 @@ class Index extends Admin
                 // 记录行为
                 $this->success('编辑成功', cookie('__forward__'));
             } else {
-                $this->error('编辑失败');
+                $this->success('编辑失败', cookie('__forward__'));
             }
         }
 
@@ -204,6 +204,7 @@ class Index extends Admin
             ->join('balance b','b.id = m_d.balanceid')
             ->where("m_d.id = $id")
             ->find();
+        $info['money'] = $info['money'] <= 0 ? $info['money'] : '+'.$info['money'];// bug处理
 
         $type = substr($info['money'],0,1) == '-' ? 0 : 1;// 判断当前交易是收款还是付款
         // 获取交易类型
@@ -220,7 +221,7 @@ class Index extends Admin
                 ['text', 'money', '交易金额'],
                 ['textarea', 'description', '交易描述'],
             ])
-            ->addDatetime('create_time', '开始时间', '', $info['create_time'], 'YYYY-MM-DD HH:mm')
+            ->addDatetime('create_time', '交易时间', '', $info['create_time'], 'YYYY-MM-DD HH:mm')
             ->addBtn($getTypeBtn)
             ->addBtn($getBalanceBtn)
             ->js('laydate/laydate')
