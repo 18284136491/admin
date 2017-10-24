@@ -121,19 +121,3 @@ function checkedBalance(data){
     $('#balanceid').val(balanceidid);// 支付方式赋值给隐藏域
 }
 
-// 交易时间
-var html = '';
-html += '<div class="form-group col-md-12 col-xs-12 " id="form_group_time">';
-html += '<label class="col-xs-12" for="money">交易时间</label>';
-html += '<div class="col-sm-12">';
-html += '<input class="form-control" type="text" id="time" name="create_time" value="" placeholder="请输入交易金额">';
-html += '</div>';
-html += '</div>';
-$($('#form_group_money')).after(html);// 添加交易时间插件
-laydate.render({
-    elem: '#time'
-    ,type: 'datetime'
-});// 时间插件
-
-
-

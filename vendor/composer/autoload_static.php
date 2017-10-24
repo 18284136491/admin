@@ -43,6 +43,13 @@ class ComposerStaticInitea24a8d88377c9cd0962665edfe67ce8
     );
 
     public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Phpml' => 
+            array (
+                0 => __DIR__ . '/..' . '/php-ai/php-ml/src',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 
