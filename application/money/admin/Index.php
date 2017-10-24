@@ -112,6 +112,7 @@ class Index extends Admin
                 ['text', 'money', '交易金额'],
                 ['textarea', 'description', '交易描述'],
             ])
+            ->addDatetime('create_time', '交易时间', '','请输入交易时间')
             ->addBtn($getTypeBtn)
             ->addBtn($getBalanceBtn)
             ->js('laydate/laydate')
@@ -219,6 +220,7 @@ class Index extends Admin
                 ['text', 'money', '交易金额'],
                 ['textarea', 'description', '交易描述'],
             ])
+            ->addDatetime('create_time', '开始时间', '', $info['create_time'], 'YYYY-MM-DD HH:mm')
             ->addBtn($getTypeBtn)
             ->addBtn($getBalanceBtn)
             ->js('laydate/laydate')
