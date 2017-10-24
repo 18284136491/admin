@@ -329,25 +329,21 @@ class Index extends Admin
     private function Balance($data)
     {
         Db::startTrans();
-
         // 余额种类表扣除余额
         $balance_map['id'] = $data['balanceid'];
+        // 验证余额是否足够支付
+        $info = DB::name('balance')->where($balance_map)->find();
+        if($info['balance'] < $data['money']){
+            $this->error('余额不足');
+        }
+        $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$data['money']);
+
         // 判断交易项是收入还是支出
         if(substr($data['money'],0,1) == '+'){
             $data['money'] = substr($data['money'],1);
-            // 余额表增加金额
-            $balance_res = DB::name('balance')->where($balance_map)->setInc('balance',$data['money']);
         }elseif(substr($data['money'],0,1) == '-'){
             $data['money'] = $data['money'];
-            // 验证余额是否足够支付
-            $info = DB::name('balance')->where($balance_map)->find();
-            if($info['balance'] < $data['money']){
-                $this->error('余额不足');
-            }
         }else{
-            // 余额表扣除金额
-            $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$data['money']);
-            // 详情表数据
             $data['money'] = '-'.$data['money'];
         }
         // 资金流水详情表添加记录
