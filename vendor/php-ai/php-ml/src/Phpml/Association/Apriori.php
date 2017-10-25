@@ -69,7 +69,6 @@ class Apriori implements Associator
         if (!$this->large) {
             $this->large = $this->apriori();
         }
-
         if ($this->rules) {
             return $this->rules;
         }

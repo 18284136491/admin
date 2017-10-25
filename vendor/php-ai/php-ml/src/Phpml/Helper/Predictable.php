@@ -21,7 +21,6 @@ trait Predictable
                 $predicted[$index] = $this->predictSample($sample);
             }
         }
-
         return $predicted;
     }
 
