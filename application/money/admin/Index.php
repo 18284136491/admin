@@ -150,13 +150,14 @@ class Index extends Admin
 
                 if($inc_res && $dec_res){
                     Db::commit();
+                }else{
+                    Db::rollback();
+                    $this->success('编辑失败', cookie('__forward__'));
                 }
-                Db::rollback();
             }
 
             // 判断金额是否修改
             if($info['money'] != $data['money']){
-
                 $money = $info['money'];// 原交易金额
                 // 原金额与修改金额差额
                 $up_money = $data['money'] > $money ? $data['money'] - $money : '-'.($money - $data['money']);
@@ -165,16 +166,16 @@ class Index extends Admin
                 // 如果差额为负数
                 if(substr($up_money,0,1) == '-'){
                     $up_money = substr($up_money,1);// 原支付金额
-                    // 支付方式扣除差额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);// 支付方式扣除差额
                 }else{
-                    // 支付方式扣除差额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);// 支付方式扣除差额
                 }
                 if($up_res){
                     Db::commit();
+                }else{
+                    Db::rollback();
+                    $this->success('编辑失败', cookie('__forward__'));
                 }
-                Db::rollback();
             }
             // 判断交易项是收入还是支出
             if(substr($data['money'],0,1) == '+'){
