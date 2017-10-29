@@ -60,7 +60,7 @@ class Income extends Admin
         return ZBuilder::make('table')
             ->setPageTitle('收入项明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['name' => '收款方式', 'typename' => '交易类型']) // 设置搜索参数
+            ->setSearch(['b.name' => '收款方式']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['name', '收款方式'],
                 ['money', '交易金额'],
@@ -416,30 +416,35 @@ class Income extends Admin
             $map["from_unixtime(m_d.create_time,'%Y-%m-%d')"] = ['<=',$end];
         }
         // 获取收款方式数据
-        $d_field = 'b.name,sum(m_d.money)value';
+        $field = "b.id,sum(m_d.money)value,b.name";
         $d_data = Db::name('money_details')
             ->alias('m_d')
-            ->field($d_field)
-            ->join('balance b', 'b.id = m_d.balanceid')
-            ->join('type t', 't.id = m_d.typeid')
+            ->field($field)
+            ->join('balance b','b.id = m_d.balanceid')
+            ->group('balanceid')
             ->where($map)
-            ->group('b.id')
-            ->order('b.id')
             ->select();
-
-        // 获取收款明细数据
-        $x_field = 'sum(m_d.money)value,t.typename name';
-        $x_data = Db::name('money_details')
-            ->alias('m_d')
-            ->field($x_field)
-            ->join('type t', 't.id = m_d.typeid')
-            ->where($map)
-            ->group('m_d.typeid')
-            ->order('m_d.balanceid')
-            ->select();
+        foreach($d_data as $key => $val){
+            $x_data[] = Db::name('money_details')
+                ->alias('m_d')
+                ->field('sum(m_d.money) value,t.typename name')
+                ->join('type t', 't.id = m_d.typeid','left')
+                ->where('m_d.balanceid',$val['id'])
+                ->where($map)
+                ->group('m_d.typeid')
+                ->order('m_d.balanceid')
+                ->select();
+            $d_data[$key] = array_splice($val,1,3);
+        }
+        // 三维数组改二维数组
+        foreach($x_data as $key1 => $val1){
+            foreach($val1 as $key2 => $val2){
+                $x_datas[] = $val1[$key2];
+            }
+        }
         // 删除金额为空的数据
-        $total = array_merge($d_data,$x_data);
-        $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
+        $total = array_merge($d_data,$x_datas);
+        $total_money = array_sum(array_column($x_datas,'value'));// 消费总金额
 
         // 银证转账金额
         $map['m_d.typeid'] = ['eq', '109'];
@@ -448,7 +453,7 @@ class Income extends Admin
         $res = [
             'total' => $total,
             'd_data' => $d_data,
-            'x_data' => $x_data,
+            'x_data' => $x_datas,
             'total_money' => $total_money,
             'stock' => $stock_money['money'],
             'reality' => $total_money - $stock_money['money'],

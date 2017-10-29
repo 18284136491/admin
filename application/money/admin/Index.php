@@ -42,7 +42,7 @@ class Index extends Admin
         $data_list = DB::name('money_details')
             ->alias('m_d')
             ->field($field)
-            ->join('type t','t.id = m_d.typeid')
+            ->join('type t','t.id = m_d.typeid','left')
             ->join('balance b','b.id = m_d.balanceid')
             ->where($map)
             ->order('m_d.create_time desc')
@@ -200,7 +200,7 @@ class Index extends Admin
         $info = DB::name('money_details')
             ->alias('m_d')
             ->field($field)
-            ->join('type t','t.id = m_d.typeid')
+            ->join('type t','t.id = m_d.typeid','left')
             ->join('balance b','b.id = m_d.balanceid')
             ->where("m_d.id = $id")
             ->find();

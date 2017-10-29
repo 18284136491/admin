@@ -60,7 +60,7 @@ class Statistics extends Admin
         return ZBuilder::make('table')
             ->setPageTitle('资金流水明细') // 设置页面标题
             ->setTableName('money_details') // 设置数据表名
-            ->setSearch(['money' => '交易金额', 'typename' => '交易类型']) // 设置搜索参数
+            ->setSearch(['b.name' => '交易类型']) // 设置搜索参数
             ->addColumns([ // 批量添加列
                 ['typename', '交易类型'],
                 ['money', '交易金额'],
