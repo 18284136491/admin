@@ -31,3 +31,19 @@ function sort_pid($data,$pid = '0'){
     }
     return $result;
 }
+
+/**
+ * setLogs [交易详情日志文件]
+ * @author dear
+ * @param $data
+ * @return void
+ */
+function setLogs($data){
+    file_put_contents('money_details.txt', $data,FILE_APPEND);
+}
+
+
+
+
+
+

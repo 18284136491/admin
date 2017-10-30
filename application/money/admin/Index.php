@@ -137,11 +137,18 @@ class Index extends Admin
             // 获取原付款方式
             $map['id'] = $data['id'];
             $info = Db::name('money_details')->where($map)->find();
+
+            $inc_data = Db::name('balance')->where('id',$info['balanceid'])->find();// 原付款方式信息
+            $dec_data = Db::name('balance')->where('id',$data['balanceid'])->find();// 现付款方式信息
+
+            $type = 0;
             // 判断支付方式是否改变
             if($info['balanceid'] != $data['balanceid']){
+                $type = 1;
                 $money = substr($info['money'],1);// 原支付金额
-                $inc_map['id'] = $info['id'];// 原付款方式
-
+                if($dec_data['balance'] - $money <= 0){
+                    $this->error('余额不足');
+                }
                 Db::startTrans();
                 // 原付款方式金额还原
                 $inc_res = Db::name('balance')->where('id',$info['balanceid'])->setInc('balance',$money);
@@ -149,6 +156,25 @@ class Index extends Admin
                 $dec_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$money);
 
                 if($inc_res && $dec_res){
+                    // 交易扣款日志数据
+                    $log_arr = [
+                        "\r\n",
+                        '--------------------------修改交易方式--------------------------' . "\r\n\r\n",
+                        '交易  时间: ' . date('Y-m-d H:i',$data['create_time']) . "\r\n",
+                        '交易  类型: ' . Db::name('type')->where('id', $data['typeid'])->find()['typename'] . "\r\n",
+                        '操作    id: ' . $data['id'] . "\r\n\r\n",
+
+                        '原支付方式: ' . $inc_data['name'] . "\r\n",
+                        '原支付余额: ' . $inc_data['balance'] . "\r\n",
+                        '交易  金额: ' . $inc_data['balance'] . ' + ' . $money . ' = ' . ($inc_data['balance'] + $money) . "\r\n",
+                        '还原后余额: ' . Db::name('balance')->where('id',$info['balanceid'])->find()['balance'] . "\r\n\r\n",
+
+                        '新支付方式: ' . $dec_data['name'] . "\r\n",
+                        '新支付余额: ' . $dec_data['balance'] . "\r\n",
+                        '交易  金额: ' . $dec_data['balance'] . ' - ' . $money . ' = ' . ($dec_data['balance'] - $money) . "\r\n",
+                        '支付后余额: ' . Db::name('balance')->where('id',$data['balanceid'])->find()['balance'] . "\r\n\r\n",
+                    ];
+                    setLogs($log_arr);
                     Db::commit();
                 }else{
                     Db::rollback();
@@ -159,24 +185,50 @@ class Index extends Admin
             // 判断金额是否修改
             if($info['money'] != $data['money']){
                 $money = $info['money'];// 原交易金额
-                // 原金额与修改金额差额
-                $up_money = $data['money'] > $money ? $data['money'] - $money : '-'.($money - $data['money']);
+
+                // 判断支付方式是否修改
+                if(!$type){
+                    $up_money = $data['money'] > $money ? $data['money'] - $money : '-'.($money - $data['money']);
+                }else{
+                    $up_money = $data['money'];
+                }
+                // 差额
+                $log_type = $up_money <= 0 ? '- ' : '+ ';
 
                 Db::startTrans();
                 // 如果差额为负数
-                if(substr($up_money,0,1) == '-'){
-                    $up_money = substr($up_money,1);// 原支付金额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money);// 支付方式扣除差额
+                if($up_money < 0){
+                    $up_money1 = substr($up_money,1);// 原支付金额
+                    $log_money = $inc_data['balance'] - $up_money1;// 差额
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setDec('balance',$up_money1);// 支付方式扣除差额
                 }else{
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);// 支付方式扣除差额
+                    $up_money1 = $up_money;
+                    $log_money = $inc_data['balance'] - $up_money1;// 差额
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);// 支付方式增加差额
                 }
+
                 if($up_res){
+                    // 交易扣款日志数据
+                    $log_arr = [
+                        "\r\n",
+                        '--------------------------修改交易金额--------------------------' . "\r\n\r\n",
+                        '交易  时间: ' . date('Y-m-d H:i',$data['create_time']) . "\r\n",
+                        '交易  类型: ' . Db::name('type')->where('id', $data['typeid'])->find()['typename'] . "\r\n",
+                        '操作    id: ' . $data['id'] . "\r\n\r\n",
+
+                        '支付  方式: ' . $dec_data['name'] . "\r\n",
+                        '支付前余额: ' . $dec_data['balance'] . "\r\n",
+                        '交易  金额: ' . $dec_data['balance'] . " $log_type" . $up_money1 . ' = ' . $log_money . "\r\n",
+                        '交易后余额: ' . Db::name('balance')->where('id',$data['balanceid'])->find()['balance'] . "\r\n\r\n",
+                    ];
+                    setLogs($log_arr);
                     Db::commit();
                 }else{
                     Db::rollback();
                     $this->success('编辑失败', cookie('__forward__'));
                 }
             }
+
             // 判断交易项是收入还是支出
             if(substr($data['money'],0,1) == '+'){
                 $data['money'] = substr($data['money'],1);
@@ -320,7 +372,6 @@ class Index extends Admin
     public function getBalanceList($map = ''){
         // 返回交易类型数据
         $type_data = Db::name('balance')->where($map)->select();
-//        $data = sort_pid($type_data);
         return $type_data;
     }
 
@@ -342,6 +393,8 @@ class Index extends Admin
         }
         $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$data['money']);
 
+        $money = $data['money'];// 交易金额临时变量
+
         // 判断交易项是收入还是支出
         if(substr($data['money'],0,1) == '+'){
             $data['money'] = substr($data['money'],1);
@@ -354,6 +407,19 @@ class Index extends Admin
         $insert = Db::name('money_details')->insert($data);
 
         if($balance_res && $insert){
+            // 交易扣款日志数据
+            $log_arr = [
+                "\r\n",
+                '--------------------------新增交易扣款--------------------------' . "\r\n\r\n",
+                '交易  时间: ' . date('Y-m-d H:i',$data['create_time']) . "\r\n",
+                '交易  类型: ' . Db::name('type')->where('id', $data['typeid'])->find()['typename'] . "\r\n\r\n",
+
+                '支付  方式: ' . $info['name'] . "\r\n",
+                '支付前余额: ' . $info['balance'] . "\r\n",
+                '交易  金额: ' . $info['balance'] . ' - ' . $money . ' = ' . ($info['balance'] - $money) . "\r\n",
+                '交易后余额: ' . Db::name('balance')->where($balance_map)->find()['balance'] . "\r\n\r\n",
+            ];
+            setLogs($log_arr);
             Db::commit();
             return 1;
         }
@@ -371,16 +437,22 @@ class Index extends Admin
     {
         Db::startTrans();
         $balance_map['id'] = $data['balanceid'];
-        $receive_money = $data['money'];// 转账金额
         $cover_charge = $data['cover_charge'] ? $data['cover_charge'] : 0;// 转账手续费
+        $receive_money = $data['money'] + $cover_charge;// 转账金额
 
         // 验证余额是否足够支付
         $info = DB::name('balance')->where($balance_map)->find();
         if($info['balance'] < $receive_money){
             $this->error('余额不足');
         }
+
         // 余额种类表扣除余额
         $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$receive_money);
+
+        // 收款前金额
+        $receive_map['id'] = $data['receiveType'];
+        $receive_data1 = Db::name('balance')->where($receive_map)->find();
+
 
         // 收款方式增加转账金额
         $receive_map['id'] = $data['receiveType'];
@@ -390,12 +462,13 @@ class Index extends Admin
 
         // 支付类型名
         $balance_map['id'] = $data['balanceid'];
-        $balance_data = $this->getBalanceList($balance_map);
-        $balance_name = $balance_data[0]['name'];
+        $balance_data = Db::name('balance')->where($balance_map)->find();
+        $balance_name = $balance_data['name'];
+
         // 收款类型名
         $receive_map['id'] = $data['receiveType'];
-        $receive_data = $this->getBalanceList($receive_map);
-        $receive_name = $receive_data[0]['name'];
+        $receive_data = Db::name('balance')->where($receive_map)->find();
+        $receive_name = $receive_data['name'];
 
         $inc_description = "[收款]{$receive_name}收到{$balance_name}的转账,收款金额为:{$reality_money}元,手续费为:{$cover_charge}元";
         $inc_data = [
@@ -408,6 +481,8 @@ class Index extends Admin
         ];
         // 交易详情添加收款记录
         $inc_res = Db::name('money_details')->insert($inc_data);
+
+        $money = $data['money'];// 交易金额临时变量
 
         // 判断交易项是收入还是支出
         if(substr($receive_money,0,1) == '+'){
@@ -432,6 +507,24 @@ class Index extends Admin
         $dec_res = Db::name('money_details')->insert($dec_data);
 
         if($balance_res && $receive_res && $inc_res && $dec_res){
+            // 交易扣款日志数据
+            $log_arr = [
+                "\r\n",
+                '--------------------------新增转账交易扣款--------------------------' . "\r\n\r\n",
+                '交易  时间: ' . date('Y-m-d H:i',$data['create_time']) . "\r\n",
+                '交易  类型: ' . Db::name('type')->where('id', $data['typeid'])->find()['typename'] . "\r\n\r\n",
+
+                '支付  方式: ' . $info['name'] . "\r\n",
+                '支付前余额: ' . $info['balance'] . "\r\n",
+                '支付  金额: ' . $info['balance'] . ' - ' . $money . ' - ' . $cover_charge . ' = ' . ($info['balance'] - $money - $cover_charge) . "\r\n",
+                '支付后余额: ' . Db::name('balance')->where($balance_map)->find()['balance'] . "\r\n\r\n",
+
+                '收款  方式: ' . $receive_data['name'] . "\r\n",
+                '收款前余额: ' . $receive_data1['balance'] . "\r\n",
+                '收款  金额: ' . $receive_data1['balance'] . ' + ' . $data['money'] . ' = ' . ($receive_data1['balance'] + $data['money']) . "\r\n",
+                '收款后余额: ' . $receive_data['balance'] . "\r\n\r\n",
+            ];
+            setLogs($log_arr);
             Db::commit();
             return 1;
         }
