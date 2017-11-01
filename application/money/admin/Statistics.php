@@ -439,7 +439,6 @@ class Statistics extends Admin
 
         // 删除金额为空的数据
         $total = array_merge($d_data,$x_data);
-        $total_money = array_sum(array_column($x_data,'value'));// 消费总金额
 
         /***************支付方式支出统计***************/
         $b_field = 'sum(if(m_d.money,m_d.money,0))value,b.name,m_d.balanceid';
@@ -475,22 +474,28 @@ class Statistics extends Admin
         // 消费总金额
         $b_total = array_merge($b_d_data,$b_x_datas);
 
-        // 转账的收款金额
-        $map['m_d.typeid'] = ['eq', 108];
-        $map['m_d.money'] = ['>=', 0];
+        // 总消费金额
+        $total_money = array_sum(array_column($d_data,'value'));
+        // 总收入金额
+        $map['m_d.money'] = ['>', 0];
+        $income = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->find();
+
+        // 银证转账的转账金额
+        $map['m_d.typeid'] = ['eq', 109];
         $zhuan = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->find();
 
         $res = [
             'total' => $total,
             'd_data' => $d_data,
             'x_data' => $x_data,
-            'total_money' => $total_money,
             'b_total' => $b_total,
             'b_d_data' => $b_d_data,
             'b_x_data' => $b_x_datas,
             'b_money' => $b_money,
-            'zhuan' => $zhuan['money'],// 转账金额
-            'reality' => $total_money + $zhuan['money'],// 实际金额
+            'total_money' => $total_money,
+            'income' => $income['money'],
+            'zhuan' => $zhuan['money'],// 银证转账金额
+            'reality' => $total_money + $income['money'] - $zhuan['money'],// 实际消费金额 = 总消费 + 总收入 - 银证转账
         ];
         return $res;
     }
