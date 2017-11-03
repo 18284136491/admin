@@ -182,6 +182,15 @@ class Index extends Admin
                 }
             }
 
+            // 判断交易项是收入还是支出
+            if(substr($data['money'],0,1) == '+'){
+                $data['money'] = substr($data['money'],1);
+            }elseif(substr($data['money'],0,1) == '-'){
+                $data['money'] = $data['money'];
+            }else{
+                $data['money'] = '-'.$data['money'];
+            }
+
             // 判断金额是否修改
             if($info['money'] != $data['money']){
                 $money = $info['money'];// 原交易金额
@@ -204,7 +213,7 @@ class Index extends Admin
                 }else{
                     $up_money1 = $up_money;
                     $log_money = $inc_data['balance'] - $up_money1;// 差额
-                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money);// 支付方式增加差额
+                    $up_res = Db::name('balance')->where('id',$data['balanceid'])->setinc('balance',$up_money1);// 支付方式增加差额
                 }
 
                 if($up_res){
@@ -227,15 +236,6 @@ class Index extends Admin
                     Db::rollback();
                     $this->success('编辑失败', cookie('__forward__'));
                 }
-            }
-
-            // 判断交易项是收入还是支出
-            if(substr($data['money'],0,1) == '+'){
-                $data['money'] = substr($data['money'],1);
-            }elseif(substr($data['money'],0,1) == '-'){
-                $data['money'] = $data['money'];
-            }else{
-                $data['money'] = '-'.$data['money'];
             }
 
             // 交易详情
