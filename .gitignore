@@ -1,5 +1,4 @@
-runtime
+
 *.log
 application/money/admin/Phpml.php
-application/database.php
 application/database.php
