@@ -80,8 +80,8 @@ class Index extends Admin
         if ($this->request->isPost()) {
             $data = $this->request->post();
 
-            if(!$data['typeid']){
-                $this->error('请选择交易类型');
+            if(!$data['typeid'] || !$data['balanceid'] || !$data['money']){
+                $this->error('参数错误');
             }
             $data['create_time'] = $data['create_time'] ? strtotime($data['create_time']) : time();
 
@@ -388,20 +388,23 @@ class Index extends Admin
         $balance_map['id'] = $data['balanceid'];
         // 验证余额是否足够支付
         $info = DB::name('balance')->where($balance_map)->find();
-        if($info['balance'] < $data['money']){
+
+        if($info['balance'] < $data['money'] && $data['money'] < 0){
             $this->error('余额不足');
         }
-        $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$data['money']);
 
         $money = $data['money'];// 交易金额临时变量
 
         // 判断交易项是收入还是支出
         if(substr($data['money'],0,1) == '+'){
             $data['money'] = substr($data['money'],1);
+            $balance_res = DB::name('balance')->where($balance_map)->setIec('balance',$money);
         }elseif(substr($data['money'],0,1) == '-'){
             $data['money'] = $data['money'];
+            $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$money);
         }else{
             $data['money'] = '-'.$data['money'];
+            $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$money);
         }
         // 资金流水详情表添加记录
         $insert = Db::name('money_details')->insert($data);
