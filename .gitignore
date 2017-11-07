@@ -2,3 +2,4 @@
 *.log
 application/money/admin/Phpml.php
 application/database.php
+money_details.txt
