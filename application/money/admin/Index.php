@@ -398,7 +398,7 @@ class Index extends Admin
         // 判断交易项是收入还是支出
         if(substr($data['money'],0,1) == '+'){
             $data['money'] = substr($data['money'],1);
-            $balance_res = DB::name('balance')->where($balance_map)->setIec('balance',$money);
+            $balance_res = DB::name('balance')->where($balance_map)->setInc('balance',$money);
         }elseif(substr($data['money'],0,1) == '-'){
             $data['money'] = $data['money'];
             $balance_res = DB::name('balance')->where($balance_map)->setDec('balance',$money);
