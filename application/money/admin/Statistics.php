@@ -476,9 +476,10 @@ class Statistics extends Admin
 
         // 总消费金额
         $total_money = array_sum(array_column($d_data,'value'));
+
         // 总收入金额
-        $map['m_d.money'] = ['>', 0];
-        $income = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->find();
+        $map['m_d.money'] = ['>', 0];// 收入金额
+        $income = Db::name('money_details')->alias('m_d')->field('sum(money)money')->where($map)->where("typeid != 139 and typeid != 140")->find();
 
         // 银证转账的转账金额
         $map['m_d.typeid'] = ['eq', 109];
