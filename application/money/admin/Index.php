@@ -504,7 +504,7 @@ class Index extends Admin
             'typeid' => $data['typeid'],
             'type_pid' => $data['type_pid'],
             'balanceid' => $data['balanceid'],
-            'create_time' => time(),
+            'create_time' => $data['create_time'],
         ];
         // 交易详情添加扣款记录
         $dec_res = Db::name('money_details')->insert($dec_data);
