@@ -63,7 +63,7 @@ class Index extends Admin
                 ['right_button', '操作', 'btn']
             ])
             ->addTopButtons('add') // 批量添加顶部按钮
-            ->addRightButton('edit') // 添加授权按钮
+            ->addRightButtons('edit,delete') // 添加授权按钮
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染页面
