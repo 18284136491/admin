@@ -389,7 +389,7 @@ class Index extends Admin
         // 验证余额是否足够支付
         $info = DB::name('balance')->where($balance_map)->find();
 
-        if($info['balance'] < $data['money'] && $data['money'] < 0){
+        if($info['balance'] < $data['money'] && substr($data['money'],0,1) != '+'){
             $this->error('余额不足');
         }
 
