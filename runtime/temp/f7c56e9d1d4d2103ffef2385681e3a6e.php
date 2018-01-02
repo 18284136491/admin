@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:61:"D:\phpStudy\WWW\GitHub\admin\plugins/DevTeam/view/widget.html";i:1507598781;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:61:"E:\phpStudy\WWW\Github\admin\plugins/DevTeam/view/widget.html";i:1507598782;}*/ ?>
 <div class="col-md-<?php echo (isset($width) && ($width !== '')?$width:6); ?>">
     <div class="block block-bordered">
         <div class="block-header bg-gray-lighter">

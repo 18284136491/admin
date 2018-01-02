@@ -480,7 +480,7 @@ class Index extends Admin
             'typeid' => $data['typeid'],
             'type_pid' => $data['type_pid'],
             'balanceid' => $data['receiveType'],
-            'create_time' => time(),
+            'create_time' => $data['create_time'],
         ];
         // 交易详情添加收款记录
         $inc_res = Db::name('money_details')->insert($inc_data);

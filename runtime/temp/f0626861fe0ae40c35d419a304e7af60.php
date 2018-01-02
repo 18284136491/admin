@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:70:"D:\phpStudy\WWW\GitHub\admin/application/user/view/admin/role\add.html";i:1507598781;s:63:"D:\phpStudy\WWW\GitHub\admin/application/admin/view/layout.html";i:1507599354;s:46:"./application/common/builder/aside/layout.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/recent.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/online.html";i:1507598781;s:53:"./application/common/builder/aside/blocks/switch.html";i:1507598781;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:68:"E:\phpStudy\WWW\Github\admin/application/admin\view\index\index.html";i:1507599356;s:63:"E:\phpStudy\WWW\Github\admin/application/admin\view\layout.html";i:1507599356;s:46:"./application/common/builder/aside/layout.html";i:1507598782;s:53:"./application/common/builder/aside/blocks/recent.html";i:1507598782;s:53:"./application/common/builder/aside/blocks/online.html";i:1507598782;s:53:"./application/common/builder/aside/blocks/switch.html";i:1507598782;}*/ ?>
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9 no-focus" lang="zh"> <![endif]-->
 <!--[if gt IE 9]><!--> <html class="no-focus" lang="zh"> <!--<![endif]-->
@@ -58,8 +58,6 @@
 
     <!--页面css-->
     
-<link href="__LIBS__/jstree/themes/default/style.min.css" rel="stylesheet" />
-
     <?php if(!(empty($_pop) || (($_pop instanceof \think\Collection || $_pop instanceof \think\Paginator ) && $_pop->isEmpty()))): ?>
     <style>
         #page-container.sidebar-l.sidebar-o {
@@ -547,114 +545,21 @@
     <main id="main-container">
         <!-- Page Header -->
         
-        <?php if(empty($_pop) || (($_pop instanceof \think\Collection || $_pop instanceof \think\Paginator ) && $_pop->isEmpty())): ?>
-        <div class="bg-gray-lighter">
-            <ol class="breadcrumb">
-                <li><i class="fa fa-map-marker"></i></li>
-                <?php if(!(empty($_location) || (($_location instanceof \think\Collection || $_location instanceof \think\Paginator ) && $_location->isEmpty()))): if(is_array($_location) || $_location instanceof \think\Collection || $_location instanceof \think\Paginator): $i = 0; $__LIST__ = $_location;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
-                <li><a class="link-effect" href="<?php if(!(empty($v["url_value"]) || (($v["url_value"] instanceof \think\Collection || $v["url_value"] instanceof \think\Paginator ) && $v["url_value"]->isEmpty()))): ?><?php echo url($v['url_value']); else: ?>javascript:void(0);<?php endif; ?>"><?php echo $v['title']; ?></a></li>
-                <?php endforeach; endif; else: echo "" ;endif; endif; ?>
-            </ol>
-        </div>
-        <?php endif; ?>
-        
         <!-- END Page Header -->
 
         <!-- Page Content -->
         <div class="content">
             
-            <?php echo hook('page_tips'); ?>
-            
-            
+            <?php echo hook('page_tips'); if(!(empty($default_pass) || (($default_pass instanceof \think\Collection || $default_pass instanceof \think\Paginator ) && $default_pass->isEmpty()))): ?>
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h3 class="font-w300 push-15">安全提示</h3>
+        <p>超级管理员默认密码未修改，建议马上 <a class="alert-link link-effect" href="<?php echo url('user/index/edit', ['id' => 1]); ?>">修改</a>。</p>
+    </div>
+    <?php endif; ?>
+    
     <div class="row">
-        <div class="col-md-12">
-            <div class="block">
-                <ul class="nav nav-tabs" data-toggle="tabs">
-                    <li class="active">
-                        <a href="#tab1">角色信息</a>
-                    </li>
-                    <li>
-                        <a href="#tab2">访问授权</a>
-                    </li>
-                    <li class="pull-right">
-                        <ul class="block-options push-10-t push-10-r">
-                            <li>
-                                <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                            </li>
-                            <li>
-                                <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-                            </li>
-                            <li>
-                                <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                            </li>
-                            <li>
-                                <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <form name="form-builder" id="form" class="form-horizontal form-builder">
-                    <div class="block-content tab-content">
-                        <div class="tab-pane fade in active push-20" id="tab1">
-                            <div class="form-group">
-                                <label class="col-xs-12" for="pid">所属角色</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="pid" name="pid">
-                                        <option value="">请选择：</option>
-                                        <?php if(is_array($role_list) || $role_list instanceof \think\Collection || $role_list instanceof \think\Paginator): $i = 0; $__LIST__ = $role_list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$role): $mod = ($i % 2 );++$i;?>
-                                        <option value="<?php echo $key; ?>"><?php echo $role; ?></option>
-                                        <?php endforeach; endif; else: echo "" ;endif; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-xs-12" for="title">角色名称</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" type="text" id="title" name="name" value="" placeholder="请输入角色名称">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-xs-12" for="description">角色描述</label>
-                                <div class="col-xs-9">
-                                    <textarea class="form-control" id="description" rows="7" name="description" placeholder="请输入角色描述"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-xs-12" for="sort">排序</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" type="text" id="sort" name="sort" value="100" placeholder="请输入排序">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade auth-node" id="tab2">
-                            <div class="row data-table-toolbar">
-                                <div class="col-sm-12">
-                                    <div class="toolbar-btn-action">
-                                        <button title="全选" type="button" class="btn btn-info" id="check-all"><i class="fa fa-check-circle-o"></i> 全选</button>
-                                        <button title="取消全选" type="button" class="btn btn-danger" id="uncheck-all"><i class="fa fa-ban"></i> 取消全选</button>
-                                        <button title="展开所有节点" type="button" class="btn btn-success" id="expand-all"><i class="fa fa-plus"></i> 展开所有节点</button>
-                                        <button title="收起所有节点" type="button" class="btn btn-warning" id="collapse-all"><i class="fa fa-minus"></i> 收起所有节点</button>
-                                        <span class="form-inline">
-                                        <input class="form-control" id="search-input" type="text" value="" placeholder="输入关键字搜索">
-                                    </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="jstree" class="push"><?php echo (isset($menus) && ($menus !== '')?$menus:''); ?></div>
-                        </div>
-                        <div class="push-20">
-                            <button class="btn btn-minw btn-primary" type="submit">
-                                确定
-                            </button>
-                            <button class="btn btn-default" type="button" onclick="javascript:history.back(-1);return false;">
-                                返回
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <?php echo hook('admin_index'); ?>
     </div>
 
         </div>
@@ -762,67 +667,14 @@
 
 <!--页面js-->
 
-<script src="__LIBS__/jstree/jstree.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('#jstree').jstree({
-            plugins: ["checkbox", "search"],
-            "checkbox" : {
-                "keep_selected_style" : false,
-                "three_state" : false,
-                "cascade" : 'down+up'
-            },
-            "search" : {
-                'show_only_matches' : true,
-                'show_only_matches_children' : true
-            }
-        });
-
-        var to = false;
-        $('#search-input').keyup(function () {
-            if(to) { clearTimeout(to); }
-            to = setTimeout(function () {
-                var v = $('#search-input').val();
-                $('#jstree').jstree(true).search(v);
-            }, 250);
-        });
-        // 全选
-        $('#check-all').click(function () {
-            $('#jstree').jstree(true).check_all();
-        });
-        // 取消全选
-        $('#uncheck-all').click(function () {
-            $('#jstree').jstree(true).uncheck_all();
-        });
-        // 展开所有
-        $('#expand-all').click(function () {
-            $('#jstree').jstree(true).open_all();
-        });
-        // 收起所有
-        $('#collapse-all').click(function () {
-            $('#jstree').jstree(true).close_all();
-        });
-
-        // 提交表单
-        $('#form').submit(function () {
-            var form_data = $(this).serialize();
-            var auth_node = $('#jstree').jstree(true).get_checked();
-            if (auth_node.length) {
-                form_data += '&menu_auth='+auth_node.join(',');
-            }
-            $.post("<?php echo url(''); ?>", form_data).success(function (res) {
-                if (res.code) {
-                    Dolphin.notify(res.msg, 'success');
-                    setTimeout(function () {
-                        location.href = res.url;
-                    }, 1500);
-                } else {
-                    Dolphin.notify(res.msg, 'danger');
-                }
-            }).fail(function () {
-                Dolphin.notify('服务器发生错误~', 'danger');
-            });
-            return false;
+    $(document).ready(function () {
+        $.ajax({
+            url: '<?php echo url("checkUpdate"); ?>',
+            type: 'GET'
+        }).done(function(data) {
+            $('#product-auth').html(data.auth);
+            $('#product-update').html($('#product-update').text() + ' ' + data.update);
         });
     });
 </script>
